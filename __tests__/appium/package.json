@@ -1,0 +1,37 @@
+{
+  "name": "appium-tests",
+  "version": "1.0.0",
+  "description": "Appium Tests for Sample App",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "appium": "^1.13.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "node-fetch": "^2.5.0",
+    "wdio-appium-service": "^0.2.3",
+    "wdio-junit-reporter": "^0.4.4",
+    "wdio-mocha-framework": "^0.6.4",
+    "wdio-spec-reporter": "^0.1.5",
+    "webdriverio": "^4.14.3"
+  },
+  "engines": {
+    "node": "< 11.0"
+  },
+  "scripts": {
+    "test": "wdio wdio.yimac.conf.js",
+    "android": "wdio wdio.android.conf.js",
+    "android-package": "wdio wdio.android.package.conf.js",
+    "ios": "wdio wdio.ios.conf.js",
+    "connect-to-app": "wdio wdio.connect-to-app.conf.js",
+    "yimac": "wdio wdio.yimac.conf.js",
+    "yimac-package": "wdio wdio.yimac.package.conf.js",
+    "yibluesky": "wdio wdio.yibluesky.conf.js",
+    "yitvos": "wdio wdio.yitvos.conf.js",
+    "yitvos-simulator": "wdio wdio.yitvos-simulator.conf.js"
+  }
+}

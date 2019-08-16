@@ -1,0 +1,8 @@
+# Appium
+#
+screenshots/
+errorShots/
+node_modules/
+appium.txt
+*.log
+*.xml
