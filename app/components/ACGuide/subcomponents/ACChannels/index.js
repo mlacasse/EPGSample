@@ -1,8 +1,7 @@
 import React, { createRef, PureComponent, Fragment } from 'react';
 import { View, Text, Image, FlatList, NativeModules } from 'react-native';
 
-
-import ACChannel from '../ACChannel';
+import { ACChannel } from './subcomponents';
 
 const { Dimensions } = NativeModules;
 
@@ -12,18 +11,10 @@ class ACChannels extends PureComponent {
 
     this.epgChanneList = createRef();
   }
-  
+
   renderHeader = () => {
     return (
       <View style={styles.headerStyle} />
-    );
-  }
-
-  renderEmpty = () => {
-    return (
-      <View style={styles.emptyStyle}>
-        <Text style={styles.textStyle}>...</Text>
-      </View>
     );
   }
 
@@ -41,15 +32,13 @@ class ACChannels extends PureComponent {
         scrollEnabled={false}
         ref={this.epgChanneList}
         data={this.props.channels}
-        keyExtractor={data => data.channel.resourceId}
+        keyExtractor={data => data.resourceId}
         renderItem={this.renderChannel}
         ListHeaderComponent={this.renderHeader}
         ListEmptyComponent={this.renderEmpty}
         snapToAlignment='start'
         snapToInterval={0}
-        initialNumToRender={5}
-        updateCellsBatchingPeriod={2000}
-        maxToRenderPerBatch={5}
+        initialNumToRender={50}
       />
     );
   }
@@ -68,7 +57,7 @@ const styles = {
   },
   textStyle: {
     fontSize: 14,
-    color: 'blue',
+    color: 'black',
   },
 };
 

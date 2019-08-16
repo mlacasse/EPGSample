@@ -1,72 +1,71 @@
 import React, { createRef, PureComponent, Fragment } from 'react';
-import { View, Text, FlatList, ScrollView } from 'react-native';
+import { View, Text, FlatList, ScrollView, FocusManager } from '@youi/react-native-youi';
 
-import ACTimeslot from '../ACTimeslot';
-
-const intervalWidth = 450 * 0.25;
-const interval = 1800; // half an hour
+import { ACTimeslot } from './subcomponents';
+import { ACTimeslotFocusStyle, ACTimeslotStyle, ACTimeslotDefaultInterval, baseTextStyle } from './styles';
 
 class ACTimeslots extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.currentDay = this.props.currentDay;
-
-    this.epgTimeslots = createRef();
-    this.epgEpisodes = createRef();
+    this.currentDay = new Date();
+    this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
   }
 
-  renderTimeBlockItem = (data) => {
-    const delta = 30 * 60000 * data.index;
-    const newDateTime = new Date(this.currentDay.getTime() + delta);
-
+  calculateTime = (ordinal) => {
     const options = {
       hour12: true,
       hour: '2-digit',
       minute: '2-digit'
     };
 
-    return (
-      <View style={styles.containerStyle}>
-        <Text style={styles.textStyle}>{newDateTime.toLocaleTimeString('en-US', options)}</Text>
-      </View>
-    );
+    const delta = 30 * 60000 * ordinal;
+    const newDateTime = new Date(this.currentDay.getTime() + delta);
+
+    return newDateTime.toLocaleTimeString('en-US', options);
   }
 
-  renderTimeslotsHeader = (timeslots) => {
-    return (
-      <FlatList
-        horizontal
-        scrollEnabled={false}
-        ref={this.epgTimeslots}
-        data={timeslots}
-        keyExtractor={data => '' + data}
-        renderItem={this.renderTimeBlockItem}
-        snapToAlignment='start'
-        snapToInterval={0}
-        initialNumToRender={5}
-        updateCellsBatchingPeriod={2000}
-        maxToRenderPerBatch={5}
-      />
-    );
+  calculateWidth = (duration) => {
+    const { width, borderWidth } = ACTimeslotStyle;
+
+    const slots = duration / ACTimeslotDefaultInterval;
+
+    return (slots * width) + (borderWidth * (slots - 1));
   }
 
-  renderEpisodeBlockItem = (data) => {
+  renderTimeslotsHeader = () => {
+    const { timeslots } = this.props;
+
     return (
-      <ScrollView horizontal>
-        {data.item.contents.map((content) => {
-          const { duration } = content.consumables[0];
-
-          const slots = duration / interval;
-          const width = (slots * intervalWidth) + (styles.containerStyle.borderWidth * (slots - 1));
-
+      <ScrollView horizontal scrollEnabled={false}>
+        {timeslots.map((index) => {
           return (
-            <Fragment>
-              <View style={[styles.containerStyle, { width }]}>
-                <Text style={styles.textStyle}>{content.title}</Text>
-              </View>
-              <View style={styles.separatorStyle} />
-            </Fragment>
+            <ACTimeslot style={ACTimeslotStyle}>
+              <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
+            </ACTimeslot>
+          );
+        })}
+      </ScrollView>
+    );
+  }
+
+  renderTimeBlockItem = (data) => {
+    const { item, index } = data;
+
+    return (
+      <ScrollView horizontal scrollEnabled={false}>
+        {item.contents.map((content) => {
+          const width = this.calculateWidth(content.consumables[0].duration);
+          
+          return (
+            <ACTimeslot
+              row={index}
+              focusable
+              style={[ACTimeslotStyle, { width }]}
+              focusStyle={[ACTimeslotFocusStyle, { width }]}
+              onFocus={this.props.onFocus}>
+              <Text style={baseTextStyle}>{content.title}</Text>
+            </ACTimeslot>
           );
         })}
       </ScrollView>
@@ -75,47 +74,21 @@ class ACTimeslots extends PureComponent {
 
   render = () => {
     const { timeslots, channels } = this.props;
-    const { containerStyle, imageStyle, textStyle } = styles;
     
     return (
-      <View style={{
-        flex: 1,
-        flexDirection: 'column',
-      }}>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
         <FlatList
           scrollEnabled={false}
-          ref={this.epgEpisodes}
           data={channels}
           keyExtractor={data => '' + data.resourceId}
-          renderItem={this.renderEpisodeBlockItem}
-          ListHeaderComponent={this.renderTimeslotsHeader(timeslots)}
+          ListHeaderComponent={this.renderTimeslotsHeader}
+          renderItem={this.renderTimeBlockItem}
           snapToAlignment='start'
-          snapToInterval={0}
-          initialNumToRender={5}
-          updateCellsBatchingPeriod={2000}
-          maxToRenderPerBatch={5}
+          initialNumToRender={30}
         />
       </View>
     );
   }
-};
-
-const styles = {
-  containerStyle: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'green',
-    width: intervalWidth,
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 42,
-  },
-  textStyle: {
-    fontSize: 12,
-    color: 'white',
-  },
 };
 
 export default ACTimeslots;

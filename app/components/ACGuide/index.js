@@ -11,10 +11,8 @@ export default class ACGuide extends PureComponent {
 
     this.state = {
       ready: false,
-      liveguide: null,
       timeslots: null,
       focusedItem: null,
-      channelItems: {}
     }
 
     // class members to keep track of where we are in the EPG, and
@@ -39,45 +37,24 @@ export default class ACGuide extends PureComponent {
 
     // timer callback to load additional information pane
     this.delayInfoPaneTimer = null;
-
-    // track the last chunk index retrieved
-    this.lastChunkRetrieved = 0;
-
-    this.epgChanneList = createRef();
-    this.epgTimeSlowList = createRef();
   }
 
   componentDidMount = () => {
-    const currentDay = getDateObject(schedules[0].contents[0].consumables[0].startTime);
-
     this.setState({
       channels: schedules,
       timeslots: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-      currentDay,
       ready: true
     });
   }
 
-  componentDidUnmount = () => {
-  }
-
-  componentDidUpdate = (prevProps, prevState) => {
+  handleOnFocus= (xOffset, row) => {
+    console.log(xOffset, row);
   }
 
   render = () => {
-    // The EPG scrolling list is achieved by nesting ScrollViews within each other. If you are
-    // using a mouse or touch, the result is a container that can you scroll horizontally or vertically.
-    // because this is 10-foot, we rely on focus events to drive scrolling behaviour. There is currently
-    // a design decision in the engine that determines focus can only drive scroll in a single direction,
-    // the direction of the items immediate parent. So by default, a Vertical ScrollView within a horizontal
-    // ScrollView can only scroll vertically due to focus changes.
-    // To work around this current behaviour, scrolling is disabled on the lists and it is left entirely to
-    // programmatic scrolling based on the currently focused item. Scroll direction and item are tracked to
-    // determine where the user is intending to go, and toggles and re-renders are used to scroll the list
-    // to the appropriate location.
     if (!this.state.ready) return <View />;
 
-    const { channels, currentDay, timeslots } = this.state;
+    const { channels, timeslots } = this.state;
 
     return(
       <View style={{
@@ -88,19 +65,10 @@ export default class ACGuide extends PureComponent {
         <View style={{ flex: 1 }}>
           <ACChannels channels={channels} />
         </View>
-        <View style={{ flex: 4 }}>
-          <ACTimeslots timeslots={timeslots} channels={channels} currentDay={currentDay} />
+        <View style={{ flex: 7 }}>
+          <ACTimeslots timeslots={timeslots} channels={channels} onFocus={this.handleOnFocus}/>
         </View>
       </View>
     );
   }
 };
-
-const getDateObject = (dateTime) => {
-  try {
-    return new Date(dateTime); // 2019-08-12T21:00:00Z
-  } catch(err) {
-    return new Date();
-  }
-};
-
