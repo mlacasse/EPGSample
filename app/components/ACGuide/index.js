@@ -1,4 +1,4 @@
-import React, { createRef, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { ACChannels, ACTimeslots } from './subcomponents';
 import { ACChannelDefaultHeight } from './subcomponents/ACChannels/styles';
@@ -14,8 +14,8 @@ export default class ACGuide extends PureComponent {
       timeslots: null,
     }
 
-    this.epgChannels = createRef();
-    this.epgTimeslots = createRef();
+    this.epgChannels = null;
+    this.epgTimeslots = null;
   }
 
   componentDidMount = () => {
@@ -27,8 +27,8 @@ export default class ACGuide extends PureComponent {
   }
 
   handleOnFocus= (xOffset, row) => {
-    this.epgChannels.value.scrollToIndex(row);
-    this.epgTimeslots.value.scrollTo(row, xOffset);
+    this.epgChannels.scrollToIndex(row);
+    this.epgTimeslots.scrollTo(row, xOffset);
   }
 
   render = () => {
@@ -37,14 +37,14 @@ export default class ACGuide extends PureComponent {
     const { channels, timeslots } = this.state;
 
     return(
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'top' }}>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <View style={{ height: ACChannelDefaultHeight - 8 }} />
-          <ACChannels ref={this.epgChannels} channels={channels} />
+          <ACChannels ref={(ref) => {this.epgChannels = ref}} channels={channels} />
         </View>
         <View style={{ flex: 3 }}>
           <ACTimeslots
-            ref={this.epgTimeslots}
+            ref={(ref) => {this.epgTimeslots = ref}}
             timeslots={timeslots}
             channels={channels}
             onFocus={this.handleOnFocus} />

@@ -1,4 +1,4 @@
-import React, { createRef, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, FlatList, ScrollView, FocusManager } from '@youi/react-native-youi';
 
 import { ACTimeslot } from './subcomponents';
@@ -16,8 +16,8 @@ class ACTimeslots extends PureComponent {
     this.currentDay = new Date();
     this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
 
-    this.listRef = createRef();
-    this.viewRef = createRef();
+    this.listRef = null;
+    this.viewRef = null;
   }
 
   calculateTime = (ordinal) => {
@@ -42,8 +42,8 @@ class ACTimeslots extends PureComponent {
   }
 
   scrollTo = (index, offset) => {
-    this.listRef.value.scrollToIndex({ animated: true, index });
-    this.viewRef.value.scrollTo({ animated: true, x: offset });
+    this.viewRef.scrollTo({ animated: true, x: offset });
+    this.listRef.scrollToIndex({ animated: true, index });
   }
 
   renderTimeslotsHeader = () => {
@@ -56,7 +56,7 @@ class ACTimeslots extends PureComponent {
         style={{ marginLeft: 2 }}>
         {timeslots.map((index) => {
           return (
-            <ACTimeslot style={ACTimeslotStyle}>
+            <ACTimeslot key={index} style={[ACTimeslotStyle]}>
               <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
             </ACTimeslot>
           );
@@ -74,11 +74,12 @@ class ACTimeslots extends PureComponent {
         scrollEnabled={false}>
         {item.contents.map((content) => {
           const width = this.calculateWidth(content.consumables[0].duration);
-          
+                    
           return (
             <ACTimeslot
-              row={index}
               focusable
+              key={content.resourceId} 
+              row={index}
               style={[ACTimeslotStyle, { width }]}
               focusStyle={[ACTimeslotFocusStyle, { width }]}
               onFocus={this.props.onFocus}>
@@ -96,18 +97,19 @@ class ACTimeslots extends PureComponent {
     return (
       <ScrollView
         horizontal
-        ref={this.viewRef}
+        ref={(ref) => {this.viewRef = ref}}
         scrollEnabled={false}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           {this.renderTimeslotsHeader()}
           <FlatList
-            ref={this.listRef}
+            ref={(ref) => {this.listRef = ref}}
             scrollEnabled={false}
             data={channels}
-            keyExtractor={data => '' + data.resourceId}
+            keyExtractor={(data, index) => '' + index}
             renderItem={this.renderTimeBlockItem}
-            snapToAlignment='start'
-            initialNumToRender={30}
+            maxToRenderPerBatch={1}
+            updateCellsBatchingPeriod={2000}
+            windowSize={5}
           />
         </View>
       </ScrollView>

@@ -1,4 +1,4 @@
-import React, { createRef, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { ACChannel } from './subcomponents';
 import { ACChannelTextStyle } from './styles';
@@ -7,15 +7,15 @@ class ACChannels extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.listRef = createRef();
+    this.listRef = null;
   }
 
   scrollToIndex = (index) => {
-    this.listRef.value.scrollToIndex({ animated: true, index });
+    this.listRef.scrollToIndex({ animated: true, index });
   }
 
-  renderChannel = (item) => {
-    const { resourceId, name } = item.item.channel;
+  renderChannel = (data) => {
+    const { resourceId, name } = data.item.channel;
 
     return (
       <ACChannel resourceId={resourceId}>
@@ -27,14 +27,15 @@ class ACChannels extends PureComponent {
   render = () => {
     return (
       <FlatList
-        ref={this.listRef}
+        ref={(ref) => {this.listRef = ref}}
         scrollEnabled={false}
         data={this.props.channels}
-        keyExtractor={data => data.resourceId}
+        keyExtractor={(data, index) => '' + index}
         renderItem={this.renderChannel}
-        snapToAlignment='start'
-        snapToInterval={0}
-        initialNumToRender={50}
+        initialNumToRender={10}
+        maxToRenderPerBatch={1}
+        updateCellsBatchingPeriod={2000}
+        windowSize={5}
       />
     );
   }
