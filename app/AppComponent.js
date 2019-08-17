@@ -35,7 +35,7 @@ class AppComponent extends PureComponent {
     this.dimensionsChangeEvent = new NativeEventEmitter(Dimensions);
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.dimensionsChangeEvent.addListener('change', this.handleOnOrientationChange);
   }
 
