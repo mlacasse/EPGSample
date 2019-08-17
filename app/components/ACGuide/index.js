@@ -12,7 +12,6 @@ export default class ACGuide extends PureComponent {
     this.state = {
       ready: false,
       timeslots: null,
-      focusedItem: null,
     }
 
     this.epgChannels = createRef();
@@ -28,8 +27,6 @@ export default class ACGuide extends PureComponent {
   }
 
   handleOnFocus= (xOffset, row) => {
-    console.log(xOffset, row);
-
     this.epgChannels.value.scrollToIndex(row);
     this.epgTimeslots.value.scrollTo(row, xOffset);
   }
@@ -40,16 +37,12 @@ export default class ACGuide extends PureComponent {
     const { channels, timeslots } = this.state;
 
     return(
-      <View style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'top',
-      }}>
-        <View style={{ flex: 1 }}>
-          <View style={{ height: ACChannelDefaultHeight }} />
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'top' }}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ height: ACChannelDefaultHeight - 8 }} />
           <ACChannels ref={this.epgChannels} channels={channels} />
         </View>
-        <View style={{ flex: 7 }}>
+        <View style={{ flex: 3 }}>
           <ACTimeslots
             ref={this.epgTimeslots}
             timeslots={timeslots}

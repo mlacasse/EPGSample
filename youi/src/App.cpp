@@ -20,7 +20,7 @@ using namespace yi::react;
 
 bool App::UserInit()
 {
-      enum
+    enum
     {
       /** This value was picked through trial and error.
        Too small makes the application crash; better to be safe and pick a larger buffer
@@ -43,7 +43,6 @@ bool App::UserInit()
     pPreferences->Set("TAG_CYIExoPlayer", "ERROR");
     pPreferences->Set("TAG_CYIHTTPService", "ERROR");
     pPreferences->Set("TAG_CYIHTTPServiceStats", "ERROR");
-    pPreferences->Set("TAG_CYIImageView", "ERROR");
     pPreferences->Set("TAG_CYILRUCache", "ERROR");
     pPreferences->Set("TAG_CYIPersistentStorePriv_Default", "ERROR");
     pPreferences->Set("TAG_CYISceneManager", "ERROR");
@@ -53,8 +52,10 @@ bool App::UserInit()
     pPreferences->Set("TAG_NativeAnimatedNodesManager", "ERROR");
     pPreferences->Set("TAG_CYIScreenTransitionManager", "ERROR");
     pPreferences->Set("TAG_CYISecureStorageBridgeDefault", "ERROR");
+    pPreferences->Set("TAG_ScrollViewManagerModule", "ERROR");
     pPreferences->Set("TAG_ShadowTree", "ERROR");
     pPreferences->Set("TAG_CYITCPSocketPriv_Base", "ERROR");
+    pPreferences->Set("TAG_TimingModule", "ERROR");
     pPreferences->Set("TAG_Transfer", "ERROR");
     pPreferences->Set("TAG_UIManagerModule", "ERROR");
 
@@ -65,6 +66,7 @@ bool App::UserInit()
     pPreferences->Set("TAG_JavaScript", "INFO");
 
     // Suppressed messages
+    pPreferences->Set("TAG_CYIImageView", "NONE");
     pPreferences->Set("TAG_CYISceneNode", "NONE");
 
     CYILogger::SetPreferences(pPreferences);

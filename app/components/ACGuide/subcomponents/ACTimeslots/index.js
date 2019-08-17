@@ -2,7 +2,12 @@ import React, { createRef, PureComponent } from 'react';
 import { View, Text, FlatList, ScrollView, FocusManager } from '@youi/react-native-youi';
 
 import { ACTimeslot } from './subcomponents';
-import { ACTimeslotFocusStyle, ACTimeslotStyle, ACTimeslotDefaultInterval, baseTextStyle } from './styles';
+import {
+  ACTimeslotFocusStyle,
+  ACTimeslotStyle,
+  ACTimeslotDefaultInterval,
+  baseTextStyle
+} from './styles';
 
 class ACTimeslots extends PureComponent {
   constructor(props) {
@@ -13,7 +18,6 @@ class ACTimeslots extends PureComponent {
 
     this.listRef = createRef();
     this.viewRef = createRef();
-    this.gridRef = createRef();
   }
 
   calculateTime = (ordinal) => {
@@ -38,9 +42,8 @@ class ACTimeslots extends PureComponent {
   }
 
   scrollTo = (index, offset) => {
-    this.listRef.scrollToIndex({ animated: true, index });
-    this.viewRef.scrollTo({ animated: true, x: offset });
-    this.gridRef.scrollTo({ animated: true, x: offset });
+    this.listRef.value.scrollToIndex({ animated: true, index });
+    this.viewRef.value.scrollTo({ animated: true, x: offset });
   }
 
   renderTimeslotsHeader = () => {
@@ -48,9 +51,9 @@ class ACTimeslots extends PureComponent {
 
     return (
       <ScrollView
-        ref={(ref) => {this.viewRef = ref}}
         horizontal
-        scrollEnabled={false}>
+        scrollEnabled={false}
+        style={{ marginLeft: 2 }}>
         {timeslots.map((index) => {
           return (
             <ACTimeslot style={ACTimeslotStyle}>
@@ -91,15 +94,14 @@ class ACTimeslots extends PureComponent {
     const { channels } = this.props;
     
     return (
-      <View style={{ flex: 1, flexDirection: 'column' }}>
-        {this.renderTimeslotsHeader()}
-
-        <ScrollView
-          horizontal
-          ref={(ref) => {this.gridRef = ref}}
-          scrollEnabled={false}>
+      <ScrollView
+        horizontal
+        ref={this.viewRef}
+        scrollEnabled={false}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
+          {this.renderTimeslotsHeader()}
           <FlatList
-            ref={(ref) => {this.listRef = ref}}
+            ref={this.listRef}
             scrollEnabled={false}
             data={channels}
             keyExtractor={data => '' + data.resourceId}
@@ -107,8 +109,8 @@ class ACTimeslots extends PureComponent {
             snapToAlignment='start'
             initialNumToRender={30}
           />
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     );
   }
 };

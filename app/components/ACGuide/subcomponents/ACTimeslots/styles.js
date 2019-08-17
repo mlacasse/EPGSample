@@ -1,13 +1,13 @@
 const ACTimeslotDefaultInterval = 1800; // 30 minutes
 const ACTimeslotDefaultWidth = 900 * 0.25;
-const ACTimeslotDefaultHeight = 42;
+const ACTimeslotDefaultHeight = 94;
 
 const ACTimeslotFocusStyle = {
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'red',
+  backgroundColor: 'grey',
   borderColor: 'black',
   borderWidth: 1,
   width: ACTimeslotDefaultWidth,
@@ -27,7 +27,7 @@ const ACTimeslotStyle = {
 };
 
 const baseTextStyle = {
-  fontSize: 12,
+  fontSize: 20,
   color: 'white',
 };
 

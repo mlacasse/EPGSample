@@ -1,5 +1,6 @@
-const ACChannelDefaultWidth = 56;
-const ACChannelDefaultHeight = 42;
+const ACChannelImageDefaultWidth = 56;
+const ACChannelImageDefaultHeight = 42;
+const ACChannelDefaultHeight = 94;
 
 const ACChannelStyle = {
   flex: 1,
@@ -8,17 +9,18 @@ const ACChannelStyle = {
   backgroundColor: 'yellow',
   borderColor: 'black',
   borderWidth: 1,
+  height: ACChannelDefaultHeight,
 };
 
 const ACChannelImageStyle = {
   marginLeft: 10,
-  width: ACChannelDefaultWidth,
-  height: ACChannelDefaultHeight,
+  width: ACChannelImageDefaultWidth,
+  height: ACChannelImageDefaultHeight,
 };
 
 const ACChannelTextStyle = {
   marginLeft: 15,
-  fontSize: 14,
+  fontSize: 24,
   color: 'black',
 };
 
@@ -26,6 +28,7 @@ export {
   ACChannelStyle,
   ACChannelImageStyle,
   ACChannelTextStyle,
-  ACChannelDefaultWidth,
   ACChannelDefaultHeight,
+  ACChannelImageDefaultWidth,
+  ACChannelImageDefaultHeight,
 };
