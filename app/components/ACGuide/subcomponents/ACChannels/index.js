@@ -1,7 +1,7 @@
-import React, { createRef, PureComponent, Fragment } from 'react';
-import { View, Text, Image, FlatList, NativeModules } from 'react-native';
-
+import React, { createRef, PureComponent } from 'react';
+import { View, Text, FlatList, NativeModules } from 'react-native';
 import { ACChannel } from './subcomponents';
+import { ACChannelTextStyle } from './styles';
 
 const { Dimensions } = NativeModules;
 
@@ -9,56 +9,37 @@ class ACChannels extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.epgChanneList = createRef();
+    this.listRef = createRef();
   }
 
-  renderHeader = () => {
-    return (
-      <View style={styles.headerStyle} />
-    );
+  scrollToIndex = (index) => {
+    this.listRef.scrollToIndex({ animated: true, index });
   }
 
   renderChannel = (item) => {
     const { resourceId, name } = item.item.channel;
 
     return (
-      <ACChannel resourceId={resourceId} channelName={name} />
+      <ACChannel resourceId={resourceId}>
+        <Text style={ACChannelTextStyle}>{name}</Text>
+      </ACChannel>
     );
   }
 
   render = () => {
     return (
       <FlatList
+        ref={(ref) => {this.listRef = ref}}
         scrollEnabled={false}
-        ref={this.epgChanneList}
         data={this.props.channels}
         keyExtractor={data => data.resourceId}
         renderItem={this.renderChannel}
-        ListHeaderComponent={this.renderHeader}
-        ListEmptyComponent={this.renderEmpty}
         snapToAlignment='start'
         snapToInterval={0}
         initialNumToRender={50}
       />
     );
   }
-};
-
-const styles = {
-  headerStyle: {
-    flex: 1,
-    height: 42,
-  },
-  emptyStyle: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'yellow',
-    height: Dimensions.window.height,
-  },
-  textStyle: {
-    fontSize: 14,
-    color: 'black',
-  },
 };
 
 export default ACChannels;

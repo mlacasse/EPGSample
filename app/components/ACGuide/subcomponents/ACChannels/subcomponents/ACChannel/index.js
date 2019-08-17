@@ -1,48 +1,33 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Image } from 'react-native';
+
+import PropTypes from 'prop-types';
+
+import { ACChannelStyle, ACChannelImageStyle } from '../../styles';
 
 class ACChannel extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
   constructor(props) {
     super(props);
   }
 
   getChannelImageLogoUrl = () => {
-    const { width, height } = styles.imageStyle;
+    const { width, height } = ACChannelImageStyle;
 
     return { uri: `https://dfwfis-sponsored.secure.footprint.net/catalog/image/imageserver/v1/service/channel/${this.props.resourceId}/chlogo-clb-guide/${width}/${height}` };
   };
   
   render = () => {
-    const { containerStyle, imageStyle, textStyle } = styles;
-
     return (
-      <View style={containerStyle}>
-        <Image style={imageStyle} source={this.getChannelImageLogoUrl()} />
-        <Text style={textStyle}>{this.props.channelName}</Text>
+      <View style={ACChannelStyle}>
+        <Image style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
+        {this.props.children}
       </View>
     );
   }
-};
-
-const styles = {
-  containerStyle: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'yellow',
-    borderColor: 'black',
-    borderWidth: 1,
-  },
-  imageStyle: {
-    marginLeft: 10,
-    width: 56,
-    height: 42,
-  },
-  textStyle: {
-    marginLeft: 15,
-    fontSize: 14,
-    color: 'black',
-  },
 };
 
 export default ACChannel;

@@ -1,5 +1,5 @@
 const ACTimeslotDefaultInterval = 1800; // 30 minutes
-const ACTimeslotDefaultWidth = 450 * 0.25;
+const ACTimeslotDefaultWidth = 900 * 0.25;
 const ACTimeslotDefaultHeight = 42;
 
 const ACTimeslotFocusStyle = {

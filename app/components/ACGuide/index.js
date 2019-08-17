@@ -1,7 +1,7 @@
-import React, { createRef, PureComponent, Fragment } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
-
+import React, { createRef, PureComponent } from 'react';
+import { View } from 'react-native';
 import { ACChannels, ACTimeslots } from './subcomponents';
+import { ACChannelDefaultHeight } from './subcomponents/ACChannels/styles';
 
 const schedules = require('../../store/schedules.json');
 
@@ -15,28 +15,8 @@ export default class ACGuide extends PureComponent {
       focusedItem: null,
     }
 
-    // class members to keep track of where we are in the EPG, and
-    // how to react during re-renders. The approach taken for the EPG is
-    // to not rely on state changes to drive behaviour, but instead to use
-    // almost mutex switches to toggle certain behaviour on a forced re-render,
-    // and then immediately toggle the switch back without a new re-render.
-    // ex/ (1) indicate we wish to toggle scroll in horizontal direction, (2) force
-    // re-render, (3) on update, perform a scrollTo due to toggle, (4) reset toggle
-    // without re-render.
-    this.toggleHorizontalScroll = false;
-    this.xOffset = 0;
-    this.yOffset = 0;
-    this.toggleCurrentHorizontalBatchNumber = 0;
-    this.toggleLastHorizontalScrollIndex = 0;
-    this.toggleVerticalScroll = false;
-    this.toggleCurrentVerticalBatchNumber = 0;
-    this.toggleLastVerticalScrollIndex = 0;
-    this.startChannelIndex = 0;
-    this.endChannelIndex = 11;
-    this.relationalVerticalIndex = 0;
-
-    // timer callback to load additional information pane
-    this.delayInfoPaneTimer = null;
+    this.epgChannels = createRef();
+    this.epgTimeslots = createRef();
   }
 
   componentDidMount = () => {
@@ -49,6 +29,9 @@ export default class ACGuide extends PureComponent {
 
   handleOnFocus= (xOffset, row) => {
     console.log(xOffset, row);
+
+    this.epgChannels.value.scrollToIndex(row);
+    this.epgTimeslots.value.scrollTo(row, xOffset);
   }
 
   render = () => {
@@ -63,10 +46,15 @@ export default class ACGuide extends PureComponent {
         justifyContent: 'top',
       }}>
         <View style={{ flex: 1 }}>
-          <ACChannels channels={channels} />
+          <View style={{ height: ACChannelDefaultHeight }} />
+          <ACChannels ref={this.epgChannels} channels={channels} />
         </View>
         <View style={{ flex: 7 }}>
-          <ACTimeslots timeslots={timeslots} channels={channels} onFocus={this.handleOnFocus}/>
+          <ACTimeslots
+            ref={this.epgTimeslots}
+            timeslots={timeslots}
+            channels={channels}
+            onFocus={this.handleOnFocus} />
         </View>
       </View>
     );

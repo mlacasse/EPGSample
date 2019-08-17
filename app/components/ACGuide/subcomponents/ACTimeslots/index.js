@@ -1,4 +1,4 @@
-import React, { createRef, PureComponent, Fragment } from 'react';
+import React, { createRef, PureComponent } from 'react';
 import { View, Text, FlatList, ScrollView, FocusManager } from '@youi/react-native-youi';
 
 import { ACTimeslot } from './subcomponents';
@@ -10,6 +10,10 @@ class ACTimeslots extends PureComponent {
 
     this.currentDay = new Date();
     this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
+
+    this.listRef = createRef();
+    this.viewRef = createRef();
+    this.gridRef = createRef();
   }
 
   calculateTime = (ordinal) => {
@@ -33,11 +37,20 @@ class ACTimeslots extends PureComponent {
     return (slots * width) + (borderWidth * (slots - 1));
   }
 
+  scrollTo = (index, offset) => {
+    this.listRef.scrollToIndex({ animated: true, index });
+    this.viewRef.scrollTo({ animated: true, x: offset });
+    this.gridRef.scrollTo({ animated: true, x: offset });
+  }
+
   renderTimeslotsHeader = () => {
     const { timeslots } = this.props;
 
     return (
-      <ScrollView horizontal scrollEnabled={false}>
+      <ScrollView
+        ref={(ref) => {this.viewRef = ref}}
+        horizontal
+        scrollEnabled={false}>
         {timeslots.map((index) => {
           return (
             <ACTimeslot style={ACTimeslotStyle}>
@@ -53,7 +66,9 @@ class ACTimeslots extends PureComponent {
     const { item, index } = data;
 
     return (
-      <ScrollView horizontal scrollEnabled={false}>
+      <ScrollView
+        horizontal
+        scrollEnabled={false}>
         {item.contents.map((content) => {
           const width = this.calculateWidth(content.consumables[0].duration);
           
@@ -73,19 +88,26 @@ class ACTimeslots extends PureComponent {
   }
 
   render = () => {
-    const { timeslots, channels } = this.props;
+    const { channels } = this.props;
     
     return (
       <View style={{ flex: 1, flexDirection: 'column' }}>
-        <FlatList
-          scrollEnabled={false}
-          data={channels}
-          keyExtractor={data => '' + data.resourceId}
-          ListHeaderComponent={this.renderTimeslotsHeader}
-          renderItem={this.renderTimeBlockItem}
-          snapToAlignment='start'
-          initialNumToRender={30}
-        />
+        {this.renderTimeslotsHeader()}
+
+        <ScrollView
+          horizontal
+          ref={(ref) => {this.gridRef = ref}}
+          scrollEnabled={false}>
+          <FlatList
+            ref={(ref) => {this.listRef = ref}}
+            scrollEnabled={false}
+            data={channels}
+            keyExtractor={data => '' + data.resourceId}
+            renderItem={this.renderTimeBlockItem}
+            snapToAlignment='start'
+            initialNumToRender={30}
+          />
+        </ScrollView>
       </View>
     );
   }
