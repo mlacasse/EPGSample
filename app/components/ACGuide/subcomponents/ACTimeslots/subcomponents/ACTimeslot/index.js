@@ -13,16 +13,8 @@ class ACTimeslot extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isFocused: false,
-    };
-  }
-
-  getStyle = () => {
-    if (!this.props.focusable) return this.props.style;
-    if (!this.state.isFocused) return this.props.style;
-
-    return this.props.focusStyle || this.props.style;
+    this.isFocused = false;
+    this.xOffset = 0;
   }
 
   handleOnFocus = () => {
@@ -30,7 +22,7 @@ class ACTimeslot extends PureComponent {
       this.props.onFocus(this.xOffset, this.props.row);
     }
 
-    this.setState({ isFocused: true });
+    this.isFocused = true;
   }
 
   handleOnBlur = () => {
@@ -38,7 +30,7 @@ class ACTimeslot extends PureComponent {
       this.props.onBlur();
     }
 
-    this.setState({ isFocused: false });
+    this.isFocused = false;
   }
 
   handleOnLayout = (event) => {
@@ -46,9 +38,11 @@ class ACTimeslot extends PureComponent {
   }
 
   render = () => {
+    const focusStyle = this.props.focusable && this.isFocused ? (this.props.focusStyle || this.props.style) : this.props.style;
+
     return (
       <View
-        style={this.getStyle()}
+        style={focusStyle}
         ref={ref => {
           if (this.props.focusable && ref) {
             FocusManager.setFocusable(ref, true);
