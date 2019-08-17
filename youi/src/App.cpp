@@ -1,6 +1,7 @@
 // © You i Labs Inc. 2000-2019. All rights reserved.
 #include "App.h"
 #include "DimensionsModule.h"
+#include "ImageUtilityModule.h"
 #include "OrientationLockModule.h"
 
 #include <JSBundlingStrings.h>
@@ -103,6 +104,7 @@ bool App::UserInit()
     bool result = PlatformApp::UserInit();
 
     GetBridge().AddModule<OrientationLockModule>();
+    GetBridge().AddModule<ImageUtilityModule>();
     GetBridge().AddModule<DimensionsModule>();
 
     return result;

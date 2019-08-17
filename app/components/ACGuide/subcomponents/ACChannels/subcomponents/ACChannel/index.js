@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, Image } from 'react-native';
-
+import { View } from 'react-native';
+import ACImage from '../../../../../ACImage';
 import PropTypes from 'prop-types';
 
 import { ACChannelStyle, ACChannelImageStyle } from '../../styles';
@@ -23,7 +23,7 @@ class ACChannel extends PureComponent {
   render = () => {
     return (
       <View style={ACChannelStyle}>
-        <Image style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
+        <ACImage show style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
         {this.props.children}
       </View>
     );
