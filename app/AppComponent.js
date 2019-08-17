@@ -8,6 +8,11 @@ const schedules = require('./store/schedules.json');
 
 const { Dimensions } = NativeModules;
 
+if (process.env.NODE_ENV !== 'production') {
+  const {whyDidYouUpdate} = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}
+
 class AppComponent extends PureComponent {
   constructor(props) {
     super(props);

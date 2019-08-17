@@ -1,9 +1,7 @@
 import React, { createRef, PureComponent } from 'react';
-import { View, Text, FlatList, NativeModules } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { ACChannel } from './subcomponents';
 import { ACChannelTextStyle } from './styles';
-
-const { Dimensions } = NativeModules;
 
 class ACChannels extends PureComponent {
   constructor(props) {
@@ -13,7 +11,7 @@ class ACChannels extends PureComponent {
   }
 
   scrollToIndex = (index) => {
-    this.listRef.scrollToIndex({ animated: true, index });
+    this.listRef.value.scrollToIndex({ animated: true, index });
   }
 
   renderChannel = (item) => {
@@ -29,7 +27,7 @@ class ACChannels extends PureComponent {
   render = () => {
     return (
       <FlatList
-        ref={(ref) => {this.listRef = ref}}
+        ref={this.listRef}
         scrollEnabled={false}
         data={this.props.channels}
         keyExtractor={data => data.resourceId}
