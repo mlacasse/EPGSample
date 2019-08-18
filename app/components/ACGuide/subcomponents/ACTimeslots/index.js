@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, Text, FlatList, ScrollView, FocusManager } from '@youi/react-native-youi';
+import { View, Text, FlatList, ScrollView } from '@youi/react-native-youi';
 
 import { ACTimeslot } from './subcomponents';
 import {
   ACTimeslotFocusStyle,
   ACTimeslotStyle,
   ACTimeslotDefaultInterval,
-  baseTextStyle
+  ACTimeslotDefaultHeight,
+  baseTextStyle,
 } from './styles';
 
 class ACTimeslots extends PureComponent {
@@ -46,22 +47,24 @@ class ACTimeslots extends PureComponent {
     this.listRef.scrollToIndex({ animated: true, index });
   }
 
+  // Normally, we'd render this using the ListHeaderComponent callback and inherit
+  // any margin/padding from the FlatList.  Unfortunately, You.i SDK's doesn't support
+  // stickyHeaderIndices property so we can't freeze the header.
   renderTimeslotsHeader = () => {
     const { timeslots } = this.props;
 
     return (
-      <ScrollView
-        horizontal
-        scrollEnabled={false}
-        style={{ marginLeft: 2 }}>
-        {timeslots.map((index) => {
-          return (
-            <ACTimeslot key={index} style={[ACTimeslotStyle]}>
-              <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
-            </ACTimeslot>
-          );
-        })}
-      </ScrollView>
+      <View style={{ height: ACTimeslotDefaultHeight, marginLeft: 2 }}>
+        <ScrollView horizontal scrollEnabled={false}>
+          {timeslots.map((index) => {
+            return (
+              <ACTimeslot key={index} style={[ACTimeslotStyle]}>
+                <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
+              </ACTimeslot>
+            );
+          })}
+        </ScrollView>
+      </View>
     );
   }
 

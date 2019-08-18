@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import { ACChannel } from './subcomponents';
 import { ACChannelTextStyle } from './styles';
 

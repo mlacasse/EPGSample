@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, FocusManager } from '@youi/react-native-youi';
+import { View, FocusManager } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 

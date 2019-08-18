@@ -39,7 +39,7 @@ export default class ACGuide extends PureComponent {
     return(
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={{ height: ACChannelDefaultHeight - 8 }} />
+          <View style={{ height: ACChannelDefaultHeight }} />
           <ACChannels ref={(ref) => {this.epgChannels = ref}} channels={channels} />
         </View>
         <View style={{ flex: 3 }}>

@@ -7,9 +7,9 @@ const ACTimeslotFocusStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'grey',
-  borderColor: 'black',
-  borderWidth: 1,
+  backgroundColor: 'black',
+  borderColor: 'green',
+  borderWidth: 5,
   width: ACTimeslotDefaultWidth,
   height: ACTimeslotDefaultHeight,
 };

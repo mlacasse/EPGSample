@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text, FlatList, NativeModules, NativeEventEmitter } from 'react-native';
-import { DeviceInfo, Input } from '@youi/react-native-youi';
+import { View, NativeModules, NativeEventEmitter } from 'react-native';
 
 import { ACGuide } from './components';
-
-const schedules = require('./store/schedules.json');
 
 const { Dimensions } = NativeModules;
 
@@ -53,16 +50,8 @@ class AppComponent extends PureComponent {
   }
 
   render = () => {
-    const { width, height } = this.state.window;
-
     return(
-      <View style={{
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'black',
-      }}>
+      <View style={{ flex: 1 }}>
         <ACGuide />
       </View>
     );
