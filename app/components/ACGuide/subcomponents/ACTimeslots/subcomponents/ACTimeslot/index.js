@@ -19,6 +19,12 @@ class ACTimeslot extends PureComponent {
     };
   }
 
+  makeFocusable = (ref) => {
+    if (this.props.focusable && ref) {
+      FocusManager.setFocusable(ref, true);
+    }
+  }
+
   handleOnFocus = () => {
     if (this.props.focusable && this.props.onFocus) {
       this.props.onFocus(this.state.xOffset, this.props.row);
@@ -45,14 +51,10 @@ class ACTimeslot extends PureComponent {
     return (
       <View
         style={viewStyle}
-        ref={ref => {
-          if (this.props.focusable && ref) {
-            FocusManager.setFocusable(ref, true);
-          }
-        }}
+        ref={this.makeFocusable}
         onFocus={this.handleOnFocus}
         onBlur={this.handleOnBlur}
-        onLayout={this.handleOnLayout}>  
+        onLayout={this.handleOnLayout}>
         {this.props.children}
       </View>
     );

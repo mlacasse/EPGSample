@@ -35,11 +35,10 @@ class ACTimeslots extends PureComponent {
   }
 
   calculateWidth = (duration) => {
-    const { width, borderWidth } = ACTimeslotStyle;
+    const { width } = ACTimeslotStyle;
+    const slots = Math.floor(duration / ACTimeslotDefaultInterval);
 
-    const slots = duration / ACTimeslotDefaultInterval;
-
-    return (slots * width) + (borderWidth * (slots - 1));
+    return slots * width;
   }
 
   scrollTo = (index, offset) => {
@@ -54,7 +53,7 @@ class ACTimeslots extends PureComponent {
     const { timeslots } = this.props;
 
     return (
-      <View style={{ height: ACTimeslotDefaultHeight, marginLeft: 2 }}>
+      <View style={{ height: ACTimeslotDefaultHeight, marginLeft: 1 }}>
         <ScrollView horizontal scrollEnabled={false}>
           {timeslots.map((index) => {
             return (
@@ -72,12 +71,10 @@ class ACTimeslots extends PureComponent {
     const { item, index } = data;
 
     return (
-      <ScrollView
-        horizontal
-        scrollEnabled={false}>
+      <ScrollView horizontal scrollEnabled={false}>
         {item.contents.map((content) => {
           const width = this.calculateWidth(content.consumables[0].duration);
-                    
+
           return (
             <ACTimeslot
               focusable
