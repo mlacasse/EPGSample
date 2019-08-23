@@ -6,6 +6,7 @@ const ACChannelStyle = {
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
+  justifyContent: 'center',
   backgroundColor: 'yellow',
   borderColor: 'black',
   borderWidth: 1,

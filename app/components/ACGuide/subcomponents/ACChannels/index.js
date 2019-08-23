@@ -15,12 +15,10 @@ class ACChannels extends PureComponent {
   }
 
   renderChannel = (data) => {
-    const { resourceId, name } = data.item.channel;
+    const { resourceId } = data.item.channel;
 
     return (
-      <ACChannel resourceId={resourceId}>
-        <Text style={ACChannelTextStyle}>{name}</Text>
-      </ACChannel>
+      <ACChannel resourceId={resourceId} />
     );
   }
 

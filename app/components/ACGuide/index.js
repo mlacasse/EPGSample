@@ -42,7 +42,7 @@ export default class ACGuide extends PureComponent {
           <View style={{ height: ACChannelDefaultHeight }} />
           <ACChannels ref={(ref) => {this.epgChannels = ref}} channels={channels} />
         </View>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 11 }}>
           <ACTimeslots
             ref={(ref) => {this.epgTimeslots = ref}}
             timeslots={timeslots}

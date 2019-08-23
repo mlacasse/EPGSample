@@ -109,7 +109,7 @@ class ACTimeslots extends PureComponent {
             renderItem={this.renderTimeBlockItem}
             maxToRenderPerBatch={1}
             updateCellsBatchingPeriod={2000}
-            windowSize={5}
+            windowSize={10}
           />
         </View>
       </ScrollView>
