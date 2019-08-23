@@ -24,7 +24,6 @@ class ACChannel extends PureComponent {
     return (
       <View style={ACChannelStyle}>
         <ACImage show style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
-        {this.props.children}
       </View>
     );
   }

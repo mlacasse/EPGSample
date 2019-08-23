@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { ACChannel } from './subcomponents';
-import { ACChannelTextStyle } from './styles';
+
+import { ACChannelDefaultHeight } from './styles';
 
 class ACChannels extends PureComponent {
   constructor(props) {
@@ -10,8 +11,12 @@ class ACChannels extends PureComponent {
     this.listRef = null;
   }
 
-  scrollToIndex = (index) => {
-    this.listRef.scrollToIndex({ animated: true, index });
+  setListRef = (ref) => {
+    this.listRef = ref;
+  }
+
+  scrollTo = (y) => {
+    this.listRef.scrollToOffset({ animated: true, offset: y });
   }
 
   renderChannel = (data) => {
@@ -25,15 +30,15 @@ class ACChannels extends PureComponent {
   render = () => {
     return (
       <FlatList
-        ref={(ref) => {this.listRef = ref}}
+        ref={this.setListRef}
+        style={{marginTop: ACChannelDefaultHeight }}
         scrollEnabled={false}
         data={this.props.channels}
         keyExtractor={(data, index) => '' + index}
         renderItem={this.renderChannel}
-        initialNumToRender={10}
-        maxToRenderPerBatch={1}
-        updateCellsBatchingPeriod={2000}
-        windowSize={5}
+        maxToRenderPerBatch={3}
+        updateCellsBatchingPeriod={500}
+        windowSize={20}
       />
     );
   }

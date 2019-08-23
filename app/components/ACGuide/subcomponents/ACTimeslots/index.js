@@ -7,6 +7,7 @@ import {
   ACTimeslotStyle,
   ACTimeslotDefaultInterval,
   ACTimeslotDefaultHeight,
+  ACTimeslotDefaultWidth,
   baseTextStyle,
 } from './styles';
 
@@ -14,11 +15,26 @@ class ACTimeslots extends PureComponent {
   constructor(props) {
     super(props);
 
+    const { timeslots } = this.props;
+
+    this.grid = {
+      width: timeslots.length * ACTimeslotDefaultWidth,
+    };
+
     this.currentDay = new Date();
     this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
+  }
 
-    this.listRef = null;
-    this.viewRef = null;
+  setViewRef = (ref) => {
+    if (ref) {
+      this.viewRef = ref;
+    }
+  }
+
+  setListRef = (ref) => {
+    if (ref) {
+      this.listRef = ref;
+    }
   }
 
   calculateTime = (ordinal) => {
@@ -41,23 +57,20 @@ class ACTimeslots extends PureComponent {
     return slots * width;
   }
 
-  scrollTo = (index, offset) => {
-    this.viewRef.scrollTo({ animated: true, x: offset });
-    this.listRef.scrollToIndex({ animated: true, index });
+  scrollTo = (x, y) => {
+    this.viewRef.scrollTo({ animated: true, x });
+    this.listRef.scrollToOffset({ animated: true, offset: y });
   }
 
-  // Normally, we'd render this using the ListHeaderComponent callback and inherit
-  // any margin/padding from the FlatList.  Unfortunately, You.i SDK's doesn't support
-  // stickyHeaderIndices property so we can't freeze the header.
   renderTimeslotsHeader = () => {
     const { timeslots } = this.props;
 
     return (
-      <View style={{ height: ACTimeslotDefaultHeight, marginLeft: 1 }}>
+      <View style={{ height: ACTimeslotDefaultHeight }}>
         <ScrollView horizontal scrollEnabled={false}>
           {timeslots.map((index) => {
             return (
-              <ACTimeslot key={index} style={[ACTimeslotStyle]}>
+              <ACTimeslot key={index} style={ACTimeslotStyle}>
                 <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
               </ACTimeslot>
             );
@@ -70,10 +83,23 @@ class ACTimeslots extends PureComponent {
   renderTimeBlockItem = (data) => {
     const { item, index } = data;
 
+    let cumulativeWidth = 0;
+    let width = 0;
+
     return (
-      <ScrollView horizontal scrollEnabled={false}>
+      <ScrollView
+        horizontal
+        scrollEnabled={false}>
         {item.contents.map((content) => {
-          const width = this.calculateWidth(content.consumables[0].duration);
+          width = this.calculateWidth(content.consumables[0].duration);
+
+          if (cumulativeWidth + width > this.grid.width) {
+            width = this.grid.width - cumulativeWidth;
+          }
+
+          if (width < 0) return null;
+
+          cumulativeWidth += width;
 
           return (
             <ACTimeslot
@@ -97,19 +123,19 @@ class ACTimeslots extends PureComponent {
     return (
       <ScrollView
         horizontal
-        ref={(ref) => {this.viewRef = ref}}
+        ref={this.setViewRef}
         scrollEnabled={false}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           {this.renderTimeslotsHeader()}
           <FlatList
-            ref={(ref) => {this.listRef = ref}}
+            ref={this.setListRef}
             scrollEnabled={false}
             data={channels}
             keyExtractor={(data, index) => '' + index}
             renderItem={this.renderTimeBlockItem}
-            maxToRenderPerBatch={1}
-            updateCellsBatchingPeriod={2000}
-            windowSize={10}
+            maxToRenderPerBatch={3}
+            updateCellsBatchingPeriod={500}
+            windowSize={20}
           />
         </View>
       </ScrollView>
