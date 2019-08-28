@@ -1,25 +1,38 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { View, Text, FlatList, ScrollView } from '@youi/react-native-youi';
 
-import { ACTimeslot } from './subcomponents';
+import PropTypes from 'prop-types';
+
+import { ACTimeslot, ACModal } from './subcomponents';
+
 import {
   ACTimeslotFocusStyle,
   ACTimeslotStyle,
   ACTimeslotDefaultInterval,
-  ACTimeslotDefaultHeight,
   ACTimeslotDefaultWidth,
-  baseTextStyle,
-} from './styles';
+  ACDefaultHeight,
+  ACDefaultTextStyle,
+} from '../../../../styles';
 
 class ACTimeslots extends PureComponent {
+  static propTypes = {
+    timeslots: PropTypes.array.isRequired,
+    channels: PropTypes.array.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
     const { timeslots } = this.props;
 
-    this.grid = {
-      width: timeslots.length * ACTimeslotDefaultWidth,
+    this.state = {
+      showModal: false,
+      grid: {
+        width: timeslots.length * ACTimeslotDefaultWidth,
+      },
     };
+
+    this.timer = null;
 
     this.currentDay = new Date();
     this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
@@ -57,21 +70,33 @@ class ACTimeslots extends PureComponent {
     return slots * width;
   }
 
-  scrollTo = (x, y) => {
+  scrollTo = (x, offset) => {
     this.viewRef.scrollTo({ animated: true, x });
-    this.listRef.scrollToOffset({ animated: true, offset: y });
+    this.listRef.scrollToOffset({ animated: true, offset });
+  }
+
+  hideModal = () => {
+    this.setState({ showModal: false });
+  }
+
+  showModal = (data) => {
+    clearTimeout(this.timer);
+
+    this.setState({ showModal: true, data });
+
+    this.timer = setTimeout(this.hideModal, 30000);
   }
 
   renderTimeslotsHeader = () => {
     const { timeslots } = this.props;
 
     return (
-      <View style={{ height: ACTimeslotDefaultHeight }}>
+      <View style={{ height: ACDefaultHeight }}>
         <ScrollView horizontal scrollEnabled={false}>
           {timeslots.map((index) => {
             return (
               <ACTimeslot key={index} style={ACTimeslotStyle}>
-                <Text style={baseTextStyle}>{this.calculateTime(index)}</Text>
+                <Text style={ACDefaultTextStyle}>{this.calculateTime(index)}</Text>
               </ACTimeslot>
             );
           })}
@@ -84,36 +109,54 @@ class ACTimeslots extends PureComponent {
     const { item, index } = data;
 
     let cumulativeWidth = 0;
-    let width = 0;
 
     return (
       <ScrollView
         horizontal
         scrollEnabled={false}>
         {item.contents.map((content) => {
-          width = this.calculateWidth(content.consumables[0].duration);
+          let width = this.calculateWidth(content.consumables[0].duration);
 
-          if (cumulativeWidth + width > this.grid.width) {
-            width = this.grid.width - cumulativeWidth;
+          if (cumulativeWidth + width > this.state.grid.width) {
+            width = this.state.grid.width - cumulativeWidth;
           }
 
-          if (width < 0) return null;
+          if (width > 0) {
+            cumulativeWidth += width;
 
-          cumulativeWidth += width;
-
-          return (
-            <ACTimeslot
-              focusable
-              key={content.resourceId} 
-              row={index}
-              style={[ACTimeslotStyle, { width }]}
-              focusStyle={[ACTimeslotFocusStyle, { width }]}
-              onFocus={this.props.onFocus}>
-              <Text style={baseTextStyle}>{content.title}</Text>
-            </ACTimeslot>
-          );
+            return (
+              <ACTimeslot
+                focusable
+                key={content.resourceId} 
+                data={content}
+                row={index}
+                style={{...ACTimeslotStyle, width }}
+                focusStyle={{...ACTimeslotFocusStyle, width }}
+                onFocus={this.props.onFocus}>
+                <Text style={ACDefaultTextStyle}>{content.title}</Text>
+              </ACTimeslot>
+            );
+          }
         })}
       </ScrollView>
+    );
+  }
+
+  renderModal = () => {
+    if (!this.state.showModal) return null;
+
+    return (
+      <ACModal
+        ref={this.setModalRef}
+        data={this.state.data}
+        style={{
+          width: this.state.grid.width,
+          backgroundColor: 'black',
+          borderColor: 'white',
+          borderWidth: 1,
+          position: 'absolute',
+          top: 188,
+          }} />
     );
   }
 
@@ -133,10 +176,14 @@ class ACTimeslots extends PureComponent {
             data={channels}
             keyExtractor={(data, index) => '' + index}
             renderItem={this.renderTimeBlockItem}
+            snapToAlignment='start'
+            snapToInterval={ACDefaultHeight}
+            decelerationRate='fast'
             maxToRenderPerBatch={3}
             updateCellsBatchingPeriod={500}
             windowSize={20}
           />
+          {this.renderModal()}
         </View>
       </ScrollView>
     );

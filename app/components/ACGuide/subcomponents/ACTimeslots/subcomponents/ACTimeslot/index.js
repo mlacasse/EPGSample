@@ -13,9 +13,10 @@ class ACTimeslot extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state = {      
       isFocused: false,
       xOffset: 0,
+      yOffset: 0,
     };
   }
 
@@ -27,7 +28,7 @@ class ACTimeslot extends PureComponent {
 
   handleOnFocus = () => {
     if (this.props.focusable && this.props.onFocus) {
-      this.props.onFocus(this.state.xOffset, this.props.row);
+      this.props.onFocus(this.state.xOffset, this.state.yOffset, this.props.data);
     }
 
     this.setState({ isFocused: true });
@@ -42,7 +43,12 @@ class ACTimeslot extends PureComponent {
   }
 
   handleOnLayout = (event) => {
-    this.setState({ xOffset: event.nativeEvent.layout.x });
+    const { row, style } = this.props;
+
+    const yOffset = row * style.height;
+    const xOffset = event.nativeEvent.layout.x;
+
+    this.setState({ xOffset, yOffset });
   }
 
   render = () => {

@@ -22,6 +22,17 @@ class ACImage extends PureComponent {
     ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps === this.props) return;
+
+    const imageHandle = findNodeHandle(this.imageRef);
+    const tombstoneHandle = findNodeHandle(this.tombstoneRef);
+
+    ImageUtilityModule.show(tombstoneHandle, true);
+    ImageUtilityModule.reset(imageHandle);
+    ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+  }
+
   handleImageOnLoad = () => {
     const tombstoneHandle = findNodeHandle(this.tombstoneRef);
 
@@ -33,13 +44,13 @@ class ACImage extends PureComponent {
       <Fragment>
         <View
           ref={(ref) => {this.tombstoneRef = ref}}
-          style={[{ display: 'flex', justifyContent: 'center' }, this.props.style]}>
+          style={{ display: 'flex', justifyContent: 'center', ...this.props.style}}>
             {this.props.children}
         </View>
         <View style={{ position: 'absolute', backgroundColor: 'transparent' }}>
           <Image
             ref={(ref) => {this.imageRef = ref}}
-            style={[{ resizeMode: 'contain' }, this.props.style ]}
+            style={{ resizeMode: 'contain', ...this.props.style }}
             onLoad={this.handleImageOnLoad}
           />
         </View>

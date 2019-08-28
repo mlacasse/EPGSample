@@ -1,11 +1,16 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { ACChannels, ACTimeslots } from './subcomponents';
-import { ACChannelDefaultHeight } from './subcomponents/ACChannels/styles';
 
+import PropTypes from 'prop-types';
+  
 const schedules = require('../../store/schedules.json');
 
 export default class ACGuide extends PureComponent {
+  static propTypes = {
+    numColumns: PropTypes.number.isRequired,
+  };
+
   constructor(props) {
     super(props);
 
@@ -28,20 +33,19 @@ export default class ACGuide extends PureComponent {
   }
 
   componentDidMount = () => {
+    const { numColumns } = this.props;
+
     this.setState({
       channels: schedules,
-      timeslots: [0, 1, 2, 3, 4], //5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
-      ready: true
+      timeslots: [...Array(numColumns).keys()],
+      ready: true,
     });
   }
 
-  handleOnFocus= (xOffset, row) => {
-    // onLayout event does not return a valid yOffset so we need to calculate it based on
-    // the index value of the vertical list.
-    const yOffset = row * ACChannelDefaultHeight;
-
+  handleOnFocus= (xOffset, yOffset, data) => {
     this.epgTimeslots.scrollTo(xOffset, yOffset);
     this.epgChannels.scrollTo(yOffset);
+    this.epgTimeslots.showModal(data);
   }
 
   render = () => {

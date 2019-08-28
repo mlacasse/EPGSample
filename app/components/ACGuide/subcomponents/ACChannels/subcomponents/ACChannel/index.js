@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import ACImage from '../../../../../ACImage';
 import PropTypes from 'prop-types';
 
-import { ACChannelStyle, ACChannelImageStyle } from '../../styles';
+import { ACChannelStyle, ACChannelImageStyle } from '../../../../../../styles';
 
 class ACChannel extends PureComponent {
   static propTypes = {
@@ -23,7 +23,7 @@ class ACChannel extends PureComponent {
   render = () => {
     return (
       <View style={ACChannelStyle}>
-        <ACImage show style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
+        <ACImage style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
       </View>
     );
   }
