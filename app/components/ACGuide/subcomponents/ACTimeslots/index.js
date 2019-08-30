@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, FlatList, ScrollView } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
@@ -145,19 +145,53 @@ class ACTimeslots extends PureComponent {
   renderModal = () => {
     if (!this.state.showModal) return null;
 
-    return (
-      <ACModal
-        ref={this.setModalRef}
-        data={this.state.data}
-        style={{
-          width: this.state.grid.width,
-          backgroundColor: 'black',
-          borderColor: 'white',
-          borderWidth: 1,
-          position: 'absolute',
-          top: 188,
-          }} />
-    );
+    const { contentType } = this.state.data;
+
+    switch(contentType) {
+      case 'MOVIE':
+        return (
+          <ACModal
+            ref={this.setModalRef}
+            data={this.state.data}
+            style={{
+              width: this.state.grid.width,
+              backgroundColor: 'black',
+              borderColor: 'white',
+              borderWidth: 1,
+              position: 'absolute',
+              top: 188,
+              }} />
+        );
+      case 'EPISODE':
+          <ACModal
+            ref={this.setModalRef}
+            data={this.state.data}
+            style={{
+              width: this.state.grid.width,
+              backgroundColor: 'black',
+              borderColor: 'white',
+              borderWidth: 1,
+              position: 'absolute',
+              top: 188,
+              }} />
+      case 'SPECIALSHOW':
+      case 'SHOW':
+      case 'SPORT':
+      default:
+        return (
+          <ACModal
+            ref={this.setModalRef}
+            data={this.state.data}
+            style={{
+              width: this.state.grid.width,
+              backgroundColor: 'black',
+              borderColor: 'white',
+              borderWidth: 1,
+              position: 'absolute',
+              top: 188,
+              }} />
+        );
+    }
   }
 
   render = () => {
