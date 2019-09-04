@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { View, Text, FlatList, ScrollView } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
@@ -79,7 +79,7 @@ class ACTimeslots extends PureComponent {
     this.setState({ showModal: false });
   }
 
-  showModal = (data) => {
+  showModal = (data, yOffset) => {
     clearTimeout(this.timer);
 
     this.setState({ showModal: true, data });
@@ -108,6 +108,18 @@ class ACTimeslots extends PureComponent {
   renderTimeBlockItem = (data) => {
     const { item, index } = data;
 
+    if (item.empty) {
+      const { width } = this.state.grid;
+
+      return (
+        <ScrollView horizontal scrollEnabled={false}>
+          <ACTimeslot style={{...ACTimeslotStyle, width }}>
+            <Text style={ACDefaultTextStyle}>No Programming</Text>
+          </ACTimeslot>
+        </ScrollView>
+      );
+    }
+
     let cumulativeWidth = 0;
 
     return (
@@ -127,7 +139,7 @@ class ACTimeslots extends PureComponent {
             return (
               <ACTimeslot
                 focusable
-                key={content.resourceId} 
+                key={content.resourceId}
                 data={content}
                 row={index}
                 style={{...ACTimeslotStyle, width }}
@@ -145,53 +157,19 @@ class ACTimeslots extends PureComponent {
   renderModal = () => {
     if (!this.state.showModal) return null;
 
-    const { contentType } = this.state.data;
-
-    switch(contentType) {
-      case 'MOVIE':
-        return (
-          <ACModal
-            ref={this.setModalRef}
-            data={this.state.data}
-            style={{
-              width: this.state.grid.width,
-              backgroundColor: 'black',
-              borderColor: 'white',
-              borderWidth: 1,
-              position: 'absolute',
-              top: 188,
-              }} />
-        );
-      case 'EPISODE':
-          <ACModal
-            ref={this.setModalRef}
-            data={this.state.data}
-            style={{
-              width: this.state.grid.width,
-              backgroundColor: 'black',
-              borderColor: 'white',
-              borderWidth: 1,
-              position: 'absolute',
-              top: 188,
-              }} />
-      case 'SPECIALSHOW':
-      case 'SHOW':
-      case 'SPORT':
-      default:
-        return (
-          <ACModal
-            ref={this.setModalRef}
-            data={this.state.data}
-            style={{
-              width: this.state.grid.width,
-              backgroundColor: 'black',
-              borderColor: 'white',
-              borderWidth: 1,
-              position: 'absolute',
-              top: 188,
-              }} />
-        );
-    }
+    return (
+      <ACModal
+        ref={this.setModalRef}
+        data={this.state.data}
+        style={{
+          width: this.state.grid.width,
+          backgroundColor: 'black',
+          borderColor: 'white',
+          borderWidth: 1,
+          position: 'absolute',
+          top: 2 * ACDefaultHeight,
+          }} />
+    );
   }
 
   render = () => {

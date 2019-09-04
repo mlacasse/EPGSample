@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 class ACTimeslot extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.array.isRequired,
-    focusStyle: PropTypes.array,
+    style: PropTypes.object.isRequired,
+    focusStyle: PropTypes.object,
   };
 
   constructor(props) {

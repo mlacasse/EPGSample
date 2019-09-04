@@ -3,12 +3,14 @@ import { View } from 'react-native';
 import { ACChannels, ACTimeslots } from './subcomponents';
 
 import PropTypes from 'prop-types';
+import { ACDefaultHeight } from '../../styles';
   
 const schedules = require('../../store/schedules.json');
 
 export default class ACGuide extends PureComponent {
   static propTypes = {
     numColumns: PropTypes.number.isRequired,
+    numRows: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -33,7 +35,9 @@ export default class ACGuide extends PureComponent {
   }
 
   componentDidMount = () => {
-    const { numColumns } = this.props;
+    const { numRows, numColumns } = this.props;
+
+    for (var i = 0; i < numRows; i++) schedules.push({ empty: true });
 
     this.setState({
       channels: schedules,
@@ -53,8 +57,12 @@ export default class ACGuide extends PureComponent {
 
     if (!ready) return null;
 
+    const { numRows } = this.props;
+
+    const height = numRows * ACDefaultHeight;
+
     return(
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', height }}>
         <View style={{ flex: 1, flexDirection: 'column' }}>
           <ACChannels ref={this.setChannelsRef} channels={channels} />
         </View>

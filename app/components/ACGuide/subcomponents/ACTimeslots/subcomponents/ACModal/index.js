@@ -6,7 +6,7 @@ import { ACContentAdvisory, ACTagLine } from './subcomponents';
 
 import PropTypes from 'prop-types';
 
-import { ACDefaultTitleTextStyle, ACDefaultBodyTextStyle } from '../../../../../../styles';
+import { ACDefaultHeight, ACDefaultTitleTextStyle, ACDefaultBodyTextStyle } from '../../../../../../styles';
 
 class ACModal extends PureComponent {
   static propTypes = {
