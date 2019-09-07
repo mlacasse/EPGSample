@@ -6,17 +6,13 @@ import { ACContentAdvisory, ACTagLine } from './subcomponents';
 
 import PropTypes from 'prop-types';
 
-import { ACDefaultHeight, ACDefaultTitleTextStyle, ACDefaultBodyTextStyle } from '../../../../../../styles';
+import { ACDefaultTitleTextStyle, ACDefaultBodyTextStyle } from '../../../../../../styles';
 
 class ACModal extends PureComponent {
   static propTypes = {
     style: PropTypes.array.isRequired,
     data: PropTypes.object.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   render = () => {
     const { data, style } = this.props;
@@ -25,17 +21,20 @@ class ACModal extends PureComponent {
 
     const { width, height, imageUrl } = images[2];
 
-    const { parentalRatingStyle, titleStyle, bodyStyle } = styles;
+    const { titleStyle, bodyStyle } = styles;
 
     return (
       <View style={style}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ justifyContent: 'center' }}>
-            <ACImage style={{ width, height, marginLeft: 15 }} source={{ uri: imageUrl }} />
+            <ACImage style={{ width, height, marginLeft: 15 }} source={{ uri: imageUrl }}>
+              <View style={{ flex: 1, backgroundColor: 'grey' }} />
+            </ACImage>
           </View>
           <View style={{ flex: 1, flexDirection: 'column', margin: 10 }}>
-            <Text style={parentalRatingStyle}>{parentalRating}</Text>
-            <Text style={titleStyle}>{title}</Text>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={titleStyle}>{title}</Text>
+            </View>
             <ACTagLine
               style={bodyStyle}
               duration={consumables[0].duration}
@@ -43,6 +42,7 @@ class ACModal extends PureComponent {
               endTime={consumables[0].endTime}
               releaseYear={releaseYear}
               genres={genres}
+              parentalRating={parentalRating}
             />
             <Text style={bodyStyle}>{description}</Text>
             <ACContentAdvisory style={bodyStyle} tvAdvisories={tvAdvisories} />
@@ -54,19 +54,16 @@ class ACModal extends PureComponent {
 }
 
 const styles = {
-  parentalRatingStyle: {
-    ...ACDefaultTitleTextStyle,
-    position: 'absolute',
-    right: 10,
-    top: 10,
-  },
   titleStyle: {
     ...ACDefaultTitleTextStyle,
     marginTop: 10,
+    flex: 0.8,
+    flexShrink: 1,
   },
   bodyStyle: {
     ...ACDefaultBodyTextStyle,
     marginTop: 10,
+    flexShrink: 1,
   },
 };
 

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
-import ACGenres from '../ACGenres';
-
 import PropTypes from 'prop-types';
 
 class ACTagLine extends PureComponent {
@@ -52,11 +50,7 @@ class ACTagLine extends PureComponent {
 
     if (!style || !duration) return '';
 
-    return (
-      <Text style={style}>
-        {this.createDurationText(duration)}
-      </Text>
-    );
+    return this.createDurationText(duration);
   }
 
   renderTimeWindow = () => {
@@ -66,15 +60,33 @@ class ACTagLine extends PureComponent {
     return ` | ${this.calculateTime(startTime)} - ${this.calculateTime(endTime)}`;
   }
 
+  renderGenres = () => {
+    const { genres } = this.props;
+
+    if (!genres) return null;
+
+    return (
+        genres.map((genre) => {
+          return ' | ' + genre;
+        })
+    );
+  }
+
+  renderParentalRating = () => {
+    const { parentalRating } = this.props;
+
+    if (!parentalRating) return null;
+
+    return ` | ${parentalRating}`;
+  }
+
   render = () => {
-    const { style, genres } = this.props;
+    const { style } = this.props;
 
     return (
       <View style={{ flexDirection: 'row' }}>
-        {this.renderDurationText()}
-        <ACGenres style={style} genres={genres} />
         <Text style={style}>
-          {this.renderReleaseYear()}{this.renderTimeWindow()}
+          {this.renderDurationText()}{this.renderGenres()}{this.renderReleaseYear()}{this.renderTimeWindow()}{this.renderParentalRating()}
         </Text>
       </View>
     );

@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import ACImage from '../../../../../ACImage';
 import PropTypes from 'prop-types';
 
-import { ACChannelStyle, ACChannelImageStyle } from '../../../../../../styles';
+import { ACChannelStyle, ACChannelImageStyle, ACDefaultTextStyle } from '../../../../../../styles';
 
 class ACChannel extends PureComponent {
   static propTypes = {
@@ -15,15 +15,21 @@ class ACChannel extends PureComponent {
   }
 
   getChannelImageLogoUrl = () => {
+    if (!this.props.channel.resourceId) return { uri: null };
+
     const { width, height } = ACChannelImageStyle;
 
-    return { uri: `https://dfwfis-sponsored.secure.footprint.net/catalog/image/imageserver/v1/service/channel/${this.props.resourceId}/chlogo-clb-guide/${width}/${height}` };
+    return { uri: `https://dfwfis-sponsored.secure.footprint.net/catalog/image/imageserver/v1/service/channel/${this.props.channel.resourceId}/chlogo-clb-guide/${width}/${height}` };
   };
   
   render = () => {
+    const { name } = this.props.channel;
+
     return (
       <View style={ACChannelStyle}>
-        <ACImage style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()} />
+        <ACImage style={ACChannelImageStyle} source={this.getChannelImageLogoUrl()}>
+          <Text style={{ ...ACDefaultTextStyle, alignSelf: 'center' }}>{name}</Text>
+        </ACImage>
       </View>
     );
   }

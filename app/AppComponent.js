@@ -52,7 +52,7 @@ class AppComponent extends PureComponent {
   render = () => {
     return(
       <View style={{ flex: 1 }}>
-        <ACGuide numRows={7} numColumns={5} />
+        <ACGuide style={{ position: 'absolute', top: 0 }} numRows={7} numColumns={9} />
       </View>
     );
   }

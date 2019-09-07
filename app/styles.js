@@ -24,9 +24,8 @@ const ACTimeslotFocusStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'grey',
-  borderColor: 'white',
-  borderWidth: 2,
+  borderColor: '#4DB8FF',
+  borderWidth: 3,
   width: ACTimeslotDefaultWidth,
   height: ACDefaultHeight,
 };
