@@ -1,4 +1,0 @@
-brew "carthage"
-brew "usbmuxd", args: ["HEAD"]
-brew "libimobiledevice", args: ["HEAD"]
-brew "ios-deploy"
