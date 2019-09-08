@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
 import { View, FocusManager } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
@@ -54,14 +55,23 @@ class ACTimeslot extends PureComponent {
   render = () => {
     const viewStyle = this.state.isFocused ? (this.props.focusStyle || this.props.style) : this.props.style;
 
+    const retentionOffset = { top: 0, left: 0, right: 0, bottom: 0 };
+
     return (
       <View
-        style={viewStyle}
         ref={this.setFocusable}
+        style={viewStyle}
         onFocus={this.handleOnFocus}
         onBlur={this.handleOnBlur}
-        onLayout={this.handleOnLayout}>
-        {this.props.children}
+        onLayout={this.handleOnLayout}
+        >
+        <TouchableWithoutFeedback
+          onPress={this.handleOnFocus}
+          onBlur={this.handleOnBlur}
+          pressRetentionOffset={retentionOffset}
+        >
+          {this.props.children}
+        </TouchableWithoutFeedback>
       </View>
     );
   }

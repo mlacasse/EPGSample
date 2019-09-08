@@ -1,5 +1,5 @@
 import React, { createRef, PureComponent, Fragment } from 'react';
-import { View, FlatList, ScrollView } from '@youi/react-native-youi';
+import { View, FlatList, ScrollView, FormFactor } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
@@ -82,7 +82,7 @@ class ACTimeslots extends PureComponent {
         <ScrollView
           horizontal
           ref={this.viewRef}
-          scrollEnabled={false}>
+          scrollEnabled={FormFactor.isTV ? false : true}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <ACTimeslotHeader timeslots={timeslots} />
             <FlatList

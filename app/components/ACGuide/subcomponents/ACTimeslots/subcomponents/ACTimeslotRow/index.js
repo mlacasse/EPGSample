@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, ScrollView } from '@youi/react-native-youi';
+import { Text, ScrollView, FormFactor } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
@@ -34,7 +34,7 @@ class ACTimeslotRow extends PureComponent {
     return (
       <ScrollView
         horizontal
-        scrollEnabled={false}>
+        scrollEnabled={FormFactor.isTV ? false : true}>
         {contents.map((content) => {
           let width = this.calculateWidth(content.consumables[0].duration);
 
