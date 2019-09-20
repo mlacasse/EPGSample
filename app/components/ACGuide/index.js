@@ -65,7 +65,11 @@ export default class ACGuide extends PureComponent {
     });
   }
 
-  handleOnFocus= (xOffset, yOffset, data) => {
+  handleOnScoll = () => {
+    console.log('handleOnScroll');
+  }
+
+  handleOnFocus = (xOffset, yOffset, data) => {
     this.epgChannels.value.scrollTo(yOffset);
     this.epgTimeslots.value.scrollTo(xOffset, yOffset);
     this.epgTimeslots.value.showModal(data);
@@ -94,6 +98,7 @@ export default class ACGuide extends PureComponent {
             ref={this.epgTimeslots}
             timeslots={timeslots}
             channels={channels}
+            onScoll={this.handleOnScoll}
             onFocus={this.handleOnFocus} />
         </View>
       </View>
