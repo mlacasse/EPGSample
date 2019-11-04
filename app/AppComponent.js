@@ -25,7 +25,7 @@ class AppComponent extends PureComponent {
 
   render = () => {
     return(
-      <View style={{ flex: 1, backgroundColor: 'grey' }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <ACGuide />
       </View>
     );

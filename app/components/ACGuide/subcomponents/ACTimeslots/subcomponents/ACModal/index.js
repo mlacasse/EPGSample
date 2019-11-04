@@ -28,7 +28,7 @@ class ACModal extends PureComponent {
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ justifyContent: 'center' }}>
             <ACImage style={{ width, height, marginLeft: 15 }} source={{ uri: imageUrl }}>
-              <View style={{ flex: 1, backgroundColor: 'grey' }} />
+              <View style={{ flex: 1, backgroundColor: 'black' }} />
             </ACImage>
           </View>
           <View style={{ flex: 1, flexDirection: 'column', margin: 10 }}>

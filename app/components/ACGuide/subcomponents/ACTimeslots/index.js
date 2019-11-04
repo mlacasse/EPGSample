@@ -71,7 +71,7 @@ class ACTimeslots extends PureComponent {
       <ACModal
         data={this.state.data}
         style={{
-          backgroundColor: 'black',
+          backgroundColor: 'white',
           borderColor: '#4DB8FF',
           borderWidth: 3,
           position: 'absolute',

@@ -9,7 +9,7 @@ const ACChannelStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  borderColor: 'white',
+  borderColor: 'grey',
   borderWidth: 1,
   height: ACDefaultHeight,
 };
@@ -35,7 +35,7 @@ const ACTimeslotStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  borderColor: 'white',
+  borderColor: 'grey',
   borderWidth: 1,
   width: ACTimeslotDefaultWidth,
   height: ACDefaultHeight,
@@ -43,12 +43,12 @@ const ACTimeslotStyle = {
 
 const ACDefaultTextStyle = {
   fontSize: 20,
-  color: 'white',
+  color: 'grey',
 };
 
 const ACDefaultTitleTextStyle = {
   fontSize: 36,
-  color: 'white',
+  color: 'grey',
 };
 
 const ACDefaultBodyTextStyle = {
