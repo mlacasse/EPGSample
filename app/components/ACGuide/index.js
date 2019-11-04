@@ -48,9 +48,8 @@ export default class ACGuide extends PureComponent {
 
       // We're using two magic numbers here - not great I know.
       //
-      // We work under the assumption that a column is only 30 minutes.  However, we only want
-      // to introduce hour long placeholders.
-      for (var j = 0; j < duration / 2; j ++) contents.push({ ...placeholder, empty: true });
+      // We work under the assumption that a column is only 60 minutes.
+      for (var j = 0; j < duration; j ++) contents.push({ ...placeholder, empty: true });
 
       schedules.push({ channel: { name: null, resourceId: null }, contents });
     }

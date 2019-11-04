@@ -1,5 +1,5 @@
-const ACTimeslotDefaultInterval = 1800; // 30 minutes
-const ACTimeslotDefaultWidth = 900 * 0.25;
+const ACTimeslotDefaultInterval = 3600; // 60 minutes
+const ACTimeslotDefaultWidth = 1800 * 0.25;
 const ACChannelImageDefaultWidth = 84;
 const ACChannelImageDefaultHeight = 62;
 const ACDefaultHeight = 94;

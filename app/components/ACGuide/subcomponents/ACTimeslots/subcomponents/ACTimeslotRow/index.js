@@ -21,7 +21,7 @@ class ACTimeslotRow extends PureComponent {
 
   calculateWidth = (duration) => {
     const { width } = ACTimeslotStyle;
-    const slots = Math.floor(duration / ACTimeslotDefaultInterval);
+    const slots = duration / ACTimeslotDefaultInterval;
 
     return slots * width;
   }

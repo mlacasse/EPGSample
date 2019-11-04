@@ -20,7 +20,7 @@ class ACTimeslotHeader extends PureComponent {
     super(props);
 
     this.currentDay = new Date();
-    this.currentDay.setMinutes(this.currentDay.getMinutes() >= 30 ? 30 : 0);
+    this.currentDay.setMinutes(0);
   }
 
   calculateTime = (ordinal) => {
@@ -30,7 +30,7 @@ class ACTimeslotHeader extends PureComponent {
       minute: '2-digit'
     };
 
-    const delta = 30 * 60000 * ordinal;
+    const delta = 60 * 60000 * ordinal;
     const newDateTime = new Date(this.currentDay.getTime() + delta);
 
     return newDateTime.toLocaleTimeString('en-US', options);
