@@ -1,5 +1,6 @@
 import React, { PureComponent, createRef } from 'react';
 import { View, NativeModules } from 'react-native';
+import { FormFactor } from '@youi/react-native-youi';
 import { ACChannels, ACTimeslots } from './subcomponents';
 
 import PropTypes from 'prop-types';
@@ -67,9 +68,12 @@ export default class ACGuide extends PureComponent {
     });
   }
 
-  handleOnScoll = () => {
-    console.log('handleOnScroll');
-  }
+  // scroll the channel list to match
+  handleOnScroll = yOffset => {
+    if (!FormFactor.isTV) {
+      this.epgChannels.value.scrollTo(yOffset);
+    }
+  };
 
   handleOnFocus = (xOffset, yOffset, data) => {
     this.epgChannels.value.scrollTo(yOffset);
@@ -99,8 +103,8 @@ export default class ACGuide extends PureComponent {
             timeslots={timeslots}
             channels={channels}
             duration={this.duration}
-            onScoll={this.handleOnScoll}
-            onFocus={this.handleOnFocus} />
+            onFocus={this.handleOnFocus}
+            onScroll={this.handleOnScroll} />
         </View>
       </View>
     );

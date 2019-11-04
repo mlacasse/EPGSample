@@ -13,6 +13,12 @@ set(YI_YOUI_ENGINE_VERSION 4.999.0 CACHE STRING "Version required for the You.i 
 set(YI_VERSION_NUMBER 1.0.0.0 CACHE STRING "Build version of the application. This is the version that will be displayed to the end user in the store.")
 set(YI_BUILD_NUMBER "ENG-unversioned" CACHE STRING "Release version number that needs to be incremented for each store submission. For Apple platforms, this is the CFBundleVersion. For Android, this is the Version Code.")
 
+if (APPLE)
+    set(CMAKE_CXX_COMPILER_FORCED 1)
+    set(CMAKE_C_COMPILER_FORCED 1)
+    set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+endif()
+
 set(YI_BUNDLE_URL_SCHEME "yirnapp")
 set(IOS_BUNDLE_URL_SCHEME "<string>${YI_BUNDLE_URL_SCHEME}</string>")
 set(TVOS_BUNDLE_URL_SCHEME "<string>${YI_BUNDLE_URL_SCHEME}</string>")

@@ -1,6 +1,6 @@
 import React, { createRef, PureComponent, Fragment } from 'react';
 import { NativeModules } from 'react-native';
-import { View, FlatList, ScrollView } from '@youi/react-native-youi';
+import { View, FlatList, ScrollView, FormFactor } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
@@ -37,8 +37,8 @@ class ACTimeslots extends PureComponent {
   }
 
   scrollTo = (x, offset) => {
-    this.viewRef.value.scrollTo({ animated: true, x });
-    this.listRef.value.scrollToOffset({ animated: true, offset });
+    this.viewRef.value.scrollTo({ animated: FormFactor.isTV, x });
+    this.listRef.value.scrollToOffset({ animated: FormFactor.isTV, offset });
   }
 
   hideModal = () => {
@@ -53,6 +53,13 @@ class ACTimeslots extends PureComponent {
     this.timer = setTimeout(this.hideModal, 5000);
   }
 
+  handleOnScroll = event => {
+    const { onScroll } = this.props;
+    const { contentOffset } = event.nativeEvent;
+
+    onScroll(contentOffset.y);
+  };
+
   renderTimeslotRow = (data) => {
     const { item, index } = data;
 
@@ -62,7 +69,7 @@ class ACTimeslots extends PureComponent {
   }
 
   renderModal = () => {
-    if (!this.state.showModal) return null;
+    if (!FormFactor.isTV || !this.state.showModal) return null;
 
     const { grid } = this.state;
 
@@ -83,19 +90,19 @@ class ACTimeslots extends PureComponent {
   }
 
   render = () => {
-    const { channels, timeslots, duration, onScroll } = this.props;
+    const { channels, timeslots, duration } = this.props;
     
     return (
       <Fragment>
         <ScrollView
           horizontal
           ref={this.viewRef}
-          scrollEnabled={false}>
+          scrollEnabled={!FormFactor.isTV}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <ACTimeslotHeader timeslots={timeslots} duration={duration} />
             <FlatList
               ref={this.listRef}
-              scrollEnabled={false}
+              scrollEnabled={!FormFactor.isTV}
               data={channels}
               keyExtractor={(data, index) => '' + index}
               renderItem={this.renderTimeslotRow}
@@ -103,7 +110,7 @@ class ACTimeslots extends PureComponent {
               snapToAlignment='start'
               snapToInterval={ACDefaultHeight}
               windowSize={20}
-              onScroll={onScroll}
+              onScroll={this.handleOnScroll}
             />
           </View>
         </ScrollView>

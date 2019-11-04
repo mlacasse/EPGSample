@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, FocusManager, Platform, FormFactor, TouchableNativeFeedback, TouchableOpacity } from '@youi/react-native-youi';
+import { View, FocusManager, FormFactor } from '@youi/react-native-youi';
+import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 
 import PropTypes from 'prop-types';
 
