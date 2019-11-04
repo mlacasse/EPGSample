@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, createRef } from 'react';
 import {
   findNodeHandle,
   View, 
@@ -12,44 +12,48 @@ class ACImage extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.imageRef = null;
-    this.tombstoneRef = null;
+    this.imageRef = createRef();
+    this.tombstoneRef = createRef();
   }
 
   componentDidMount = () => {
-    const imageHandle = findNodeHandle(this.imageRef);
-
-    ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+    ImageUtilityModule.setImage(this.getImageHandle(), this.props.source.uri);
   }
 
   componentDidUpdate = (prevProps, prevState) => {
     if (prevProps === this.props) return;
 
-    const imageHandle = findNodeHandle(this.imageRef);
-    const tombstoneHandle = findNodeHandle(this.tombstoneRef);
+    const imageHandle = this.getImageHandle();
+    const tombstoneHandle = this.getTombstoneHandle();
 
     ImageUtilityModule.show(tombstoneHandle, true);
     ImageUtilityModule.reset(imageHandle);
     ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
   }
 
-  handleImageOnLoad = () => {
-    const tombstoneHandle = findNodeHandle(this.tombstoneRef);
+  getTombstoneHandle = () => {
+    return findNodeHandle(this.tombstoneRef.value);
+  }
 
-    ImageUtilityModule.show(tombstoneHandle, false);
+  getImageHandle = () => {
+    return findNodeHandle(this.imageRef.value);
+  }
+
+  handleImageOnLoad = () => {
+    ImageUtilityModule.show(this.getTombstoneHandle(), false);
   };
 
   render() {
     return (
       <Fragment>
         <View
-          ref={(ref) => {this.tombstoneRef = ref}}
+          ref={this.tombstoneRef}
           style={{ display: 'flex', justifyContent: 'center', ...this.props.style}}>
             {this.props.children}
         </View>
         <View style={{ position: 'absolute', backgroundColor: 'transparent' }}>
           <Image
-            ref={(ref) => {this.imageRef = ref}}
+            ref={this.imageRef}
             style={{ resizeMode: 'contain', ...this.props.style }}
             onLoad={this.handleImageOnLoad}
           />
