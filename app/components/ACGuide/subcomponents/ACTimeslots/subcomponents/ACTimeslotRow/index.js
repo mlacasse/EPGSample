@@ -9,6 +9,7 @@ import {
   ACTimeslotFocusStyle,
   ACTimeslotStyle,
   ACTimeslotDefaultInterval,
+  ACTimeslotDefaultWidth,
   ACDefaultTextStyle,
 } from '../../../../../../styles';
 
@@ -54,7 +55,10 @@ class ACTimeslotRow extends PureComponent {
                 style={{...ACTimeslotStyle, width }}
                 focusStyle={{...ACTimeslotFocusStyle, width }}
                 onFocus={this.props.onFocus}>
-                <Text style={ACDefaultTextStyle}>{content.title}</Text>
+                <Text style={ACDefaultTextStyle}>
+                  {/* No point rendering the title if width is so small */}
+                  {width < ACTimeslotDefaultWidth / 3 ? '...' : content.title}
+                </Text>
               </ACTimeslot>
             );
           }

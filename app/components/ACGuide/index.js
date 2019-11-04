@@ -27,7 +27,7 @@ export default class ACGuide extends PureComponent {
   }
 
   componentDidMount = () => {
-    const duration = this.props.duration ? this.props.duration : Math.floor(Dimensions.window.width / ACTimeslotDefaultWidth);
+    const duration = this.props.duration ? this.props.duration : Math.ceil(Dimensions.window.width / ACTimeslotDefaultWidth);
 
     // Working under the assumption that duration is measured in seconds.
     const placeholder = {
