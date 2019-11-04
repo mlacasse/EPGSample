@@ -83,7 +83,7 @@ export default class ACGuide extends PureComponent {
 
     const containerStyle = {
       width: '100%',                                // we need a default value for width
-      ...this.props.style,                          // otherwise we use what's passed in.
+      // ...this.props.style,                          // otherwise we use what's passed in.
       height: this.props.numRows * ACDefaultHeight, // height is defined by numRows.
       flexDirection: 'row',
     };
