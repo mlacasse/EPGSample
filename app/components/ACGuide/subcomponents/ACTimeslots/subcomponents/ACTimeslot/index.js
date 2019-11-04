@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
-import { View, FocusManager } from '@youi/react-native-youi';
+import { View, FocusManager, Platform, FormFactor, TouchableNativeFeedback, TouchableOpacity } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
+
+const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
 class ACTimeslot extends PureComponent {
   static propTypes = {
@@ -15,9 +17,10 @@ class ACTimeslot extends PureComponent {
 
     this.state = {      
       isFocused: false,
-      xOffset: 0,
-      yOffset: 0,
     };
+
+    this.xOffset = 0;
+    this.yOffset = 0;
   }
 
   setFocusable = (ref) => {
@@ -28,11 +31,11 @@ class ACTimeslot extends PureComponent {
 
   handleOnFocus = () => {
     if (this.props.focusable && this.props.onFocus) {
-      this.props.onFocus(this.state.xOffset, this.state.yOffset, this.props.data);
+      this.props.onFocus(this.xOffset, this.yOffset, this.props.data);
     }
 
     this.setState({ isFocused: true });
-  }
+  };
 
   handleOnBlur = () => {
     if (this.props.focusable && this.props.onBlur) {
@@ -40,18 +43,30 @@ class ACTimeslot extends PureComponent {
     }
 
     this.setState({ isFocused: false });
-  }
+  };
+
+  handleOnPress = () => {
+    if (this.props.focusable && this.props.onFocus) {
+      this.props.onFocus(this.xOffset, this.yOffset, this.props.data);
+    }
+  };
 
   handleOnLayout = (event) => {
     const { row, style } = this.props;
 
-    const yOffset = row * style.height;
-    const xOffset = event.nativeEvent.layout.x;
+    this.yOffset = row * style.height;
+    this.xOffset = event.nativeEvent.layout.x;
+  };
 
-    this.setState({ xOffset, yOffset });
-  }
+  renderForMobile = () => {
+    return (
+      <Touchable onPress={this.handleOnPress} onLayout={this.handleOnLayout}>
+        <View style={this.props.style}>{this.props.children}</View>
+      </Touchable>
+    );
+  };
 
-  render = () => {
+  renderForTV = () => {
     const viewStyle = this.state.isFocused ? (this.props.focusStyle || this.props.style) : this.props.style;
 
     return (
@@ -64,7 +79,11 @@ class ACTimeslot extends PureComponent {
         {this.props.children}
       </View>
     );
-  }
+  };
+
+  render = () => {
+    return FormFactor.isTV ? this.renderForTV() : this.renderForMobile();
+  };
 };
 
 export default ACTimeslot;

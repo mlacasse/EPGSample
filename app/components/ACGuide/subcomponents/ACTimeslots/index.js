@@ -8,6 +8,7 @@ import { ACModal, ACTimeslotHeader, ACTimeslotRow } from './subcomponents';
 
 import {
   ACTimeslotDefaultWidth,
+  ACTimeslotHeaderHeight,
   ACDefaultHeight,
 } from '../../../../styles';
 
@@ -75,14 +76,14 @@ class ACTimeslots extends PureComponent {
           borderColor: '#4DB8FF',
           borderWidth: 3,
           position: 'absolute',
-          top: ACDefaultHeight * 2,
+          top: ACDefaultHeight + ACTimeslotHeaderHeight,
           width,
         }} />
     );
   }
 
   render = () => {
-    const { channels, timeslots, onScroll } = this.props;
+    const { channels, timeslots, duration, onScroll } = this.props;
     
     return (
       <Fragment>
@@ -91,7 +92,7 @@ class ACTimeslots extends PureComponent {
           ref={this.viewRef}
           scrollEnabled={false}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
-            <ACTimeslotHeader timeslots={timeslots} />
+            <ACTimeslotHeader timeslots={timeslots} duration={duration} />
             <FlatList
               ref={this.listRef}
               scrollEnabled={false}

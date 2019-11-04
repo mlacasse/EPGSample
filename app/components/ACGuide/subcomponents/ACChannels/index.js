@@ -2,7 +2,7 @@ import React, { createRef, PureComponent } from 'react';
 import { FlatList } from 'react-native';
 import { ACChannel } from './subcomponents';
 
-import { ACDefaultHeight } from '../../../../styles';
+import { ACDefaultHeight, ACTimeslotHeaderHeight } from '../../../../styles';
 
 class ACChannels extends PureComponent {
   constructor(props) {
@@ -27,7 +27,7 @@ class ACChannels extends PureComponent {
     return (
       <FlatList
         ref={this.listRef}
-        style={{ marginTop: ACDefaultHeight }}
+        style={{ marginTop: ACTimeslotHeaderHeight }}
         scrollEnabled={false}
         data={this.props.channels}
         keyExtractor={(data, index) => '' + index}

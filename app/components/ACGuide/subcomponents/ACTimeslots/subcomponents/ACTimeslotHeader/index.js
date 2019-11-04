@@ -4,11 +4,12 @@ import { View, Text, ScrollView } from '@youi/react-native-youi';
 import PropTypes from 'prop-types';
 
 import ACTimeslot from '../ACTimeslot';
+import ACCurrentTimeIndicator from '../ACCurrentTimeIndicator';
 
 import {
   ACTimeslotStyle,
-  ACDefaultHeight,
   ACDefaultTextStyle,
+  ACTimeslotHeaderHeight,
 } from '../../../../../../styles';
 
 class ACTimeslotHeader extends PureComponent {
@@ -24,32 +25,49 @@ class ACTimeslotHeader extends PureComponent {
   }
 
   calculateTime = (ordinal) => {
-    const options = {
-      hour12: true,
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-
+    // TODO: Use date-fns module for date calculations
     const delta = 60 * 60000 * ordinal;
     const newDateTime = new Date(this.currentDay.getTime() + delta);
 
-    return newDateTime.toLocaleTimeString('en-US', options);
+    let hours = newDateTime.getHours();
+    let minutes = newDateTime.getMinutes();
+
+    const ampm = hours >= 12 ? 'p' : 'a';
+
+    hours %= 12;
+    hours = hours || 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return hours + ':' + minutes + ampm;
   }
 
   render = () => {
-    const { timeslots } = this.props;
+    const { timeslots, duration } = this.props;
+
+    const headerStyle = {
+      ...ACDefaultTextStyle,
+      height: ACTimeslotHeaderHeight,
+    };
+
+    const headerViewStyle = {
+      ...ACTimeslotStyle,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      borderWidth: 0,
+    };
 
     return (
-      <View style={{ height: ACDefaultHeight }}>
+      <View style={{ height: ACTimeslotHeaderHeight }}>
         <ScrollView horizontal scrollEnabled={false}>
           {timeslots.map((index) => {
             return (
-              <ACTimeslot key={index} style={ACTimeslotStyle}>
-                <Text style={ACDefaultTextStyle}>{this.calculateTime(index)}</Text>
+              <ACTimeslot key={index} style={headerViewStyle}>
+                <Text style={headerStyle}>{this.calculateTime(index)}</Text>
               </ACTimeslot>
             );
           })}
         </ScrollView>
+        <ACCurrentTimeIndicator duration={duration} currentDay={this.currentDay.getTime()} />
       </View>
     );
   }

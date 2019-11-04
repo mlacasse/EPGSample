@@ -11,7 +11,7 @@ const { Dimensions } = NativeModules;
 
 export default class ACGuide extends PureComponent {
   static propTypes = {
-    duration: PropTypes.number.isRequired,
+    duration: PropTypes.number,
   };
 
   constructor(props) {
@@ -22,13 +22,13 @@ export default class ACGuide extends PureComponent {
       timeslots: null,
     }
 
+    this.duration = Math.ceil(this.props.duration ? this.props.duration : Dimensions.window.width / ACTimeslotDefaultWidth);
+
     this.epgChannels = createRef();
     this.epgTimeslots = createRef();
   }
 
   componentDidMount = () => {
-    const duration = this.props.duration ? this.props.duration : Math.ceil(Dimensions.window.width / ACTimeslotDefaultWidth);
-
     // Working under the assumption that duration is measured in seconds.
     const placeholder = {
       title: 'No Programming',
@@ -49,7 +49,7 @@ export default class ACGuide extends PureComponent {
       // We're using two magic numbers here - not great I know.
       //
       // We work under the assumption that a column is only 60 minutes.
-      for (var j = 0; j < duration; j ++) contents.push({ ...placeholder, empty: true });
+      for (var j = 0; j < this.duration; j ++) contents.push({ ...placeholder, empty: true });
 
       schedules.push({ channel: { name: null, resourceId: null }, contents });
     }
@@ -57,12 +57,12 @@ export default class ACGuide extends PureComponent {
     // Sometimes the data is garbage and we need to fill out what's missing in the
     // row.  This is yuck but it gets the job done.
     for (var k = 0; k < schedules.length; k++)
-      for (var l = 0; l < duration; l++) schedules[k].contents.push(placeholder);
+      for (var l = 0; l < this.duration; l++) schedules[k].contents.push(placeholder);
 
     // Once complete, we store the schedule, number of timeslot colums, and ready flag.
     this.setState({
       channels: schedules,
-      timeslots: [...Array(duration).keys()],
+      timeslots: [...Array(this.duration).keys()],
       ready: true,
     });
   }
@@ -98,6 +98,7 @@ export default class ACGuide extends PureComponent {
             ref={this.epgTimeslots}
             timeslots={timeslots}
             channels={channels}
+            duration={this.duration}
             onScoll={this.handleOnScoll}
             onFocus={this.handleOnFocus} />
         </View>

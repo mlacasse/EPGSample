@@ -2,6 +2,7 @@ const ACTimeslotDefaultInterval = 3600; // 60 minutes
 const ACTimeslotDefaultWidth = 3600 * 0.25;
 const ACChannelImageDefaultWidth = 84;
 const ACChannelImageDefaultHeight = 62;
+const ACTimeslotHeaderHeight = 47;
 const ACDefaultHeight = 94;
 
 const ACChannelStyle = {
@@ -60,6 +61,7 @@ export {
   ACChannelStyle,
   ACChannelImageStyle,
   ACDefaultHeight,
+  ACTimeslotHeaderHeight,
   ACChannelImageDefaultWidth,
   ACChannelImageDefaultHeight,
   ACTimeslotFocusStyle,
