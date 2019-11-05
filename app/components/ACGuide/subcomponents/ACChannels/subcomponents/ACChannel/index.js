@@ -19,7 +19,11 @@ class ACChannel extends PureComponent {
 
     const { width, height } = ACChannelImageStyle;
 
-    return { uri: `https://dfwfis-sponsored.secure.footprint.net/catalog/image/imageserver/v1/service/channel/${this.props.channel.resourceId}/chlogo-clb-guide/${width}/${height}` };
+    const uri = `https://dfwfis-sponsored.secure.footprint.net/catalog/image/imageserver/v1/service/channel/${this.props.channel.resourceId}/chlogo-clb-guide/${width}/${height}`;
+    
+    console.log('CHANNEL LOGO', uri);
+
+    return { uri };
   };
   
   render = () => {
