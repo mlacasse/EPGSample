@@ -1,8 +1,15 @@
 import React, { createRef, PureComponent } from 'react';
-import { FlatList } from 'react-native';
-import { ACChannel } from './subcomponents';
+import { View, Text, FlatList } from 'react-native';
 
-import { ACDefaultHeight, ACTimeslotHeaderHeight } from '../../../../styles';
+import ACImage from '../../../ACImage';
+
+import {
+  ACDefaultHeight,
+  ACDefaultTextStyle,
+  ACChannelStyle,
+  ACChannelImageStyle,
+  ACTimeslotHeaderHeight
+} from '../../../../styles';
 
 class ACChannels extends PureComponent {
   constructor(props) {
@@ -11,17 +18,21 @@ class ACChannels extends PureComponent {
     this.listRef = createRef();
   }
 
-  scrollTo = (offset) => {
+  scrollTo = offset => {
     this.listRef.value.scrollToOffset({ animated: true, offset });
-  }
+  };
 
-  renderChannel = (data) => {
-    const { channel } = data.item;
+  renderChannel = data => {
+    const { name, majorChannelNumber } = data.item.channel;
 
     return (
-      <ACChannel channel={channel} />
+      <View style={ACChannelStyle}>
+        <ACImage style={ACChannelImageStyle} source={{ uri: `res://drawable/default/${majorChannelNumber}.png`}}>
+          <Text style={{ ...ACDefaultTextStyle, alignSelf: 'center' }}>{name}</Text>
+        </ACImage>
+      </View>
     );
-  }
+  };
 
   render = () => {
     return (
@@ -38,7 +49,7 @@ class ACChannels extends PureComponent {
         windowSize={20}
       />
     );
-  }
+  };
 };
 
 export default ACChannels;

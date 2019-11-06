@@ -21,7 +21,7 @@ class ACImage extends PureComponent {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps === this.props) return;
+    if (prevProps.source.uri === this.props.source.uri) return;
 
     const imageHandle = this.getImageHandle();
     const tombstoneHandle = this.getTombstoneHandle();
