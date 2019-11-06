@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
-import ACTimeslot from '../ACTimeslot';
+import ACSlot from '../ACSlot';
 import ACCurrentTimeIndicator from '../ACCurrentTimeIndicator';
 
 import {
@@ -12,7 +12,7 @@ import {
   ACTimeslotHeaderHeight,
 } from '../../../../../../styles';
 
-class ACTimeslotHeader extends PureComponent {
+class ACHeader extends PureComponent {
   static propTypes = {
     timeslots: PropTypes.array.isRequired,
   };
@@ -42,7 +42,7 @@ class ACTimeslotHeader extends PureComponent {
   }
 
   render = () => {
-    const { timeslots, duration } = this.props;
+    const columns = [...Array(this.props.duration).keys()];
 
     const headerStyle = {
       ...ACDefaultTextStyle,
@@ -59,18 +59,18 @@ class ACTimeslotHeader extends PureComponent {
     return (
       <View style={{ height: ACTimeslotHeaderHeight }}>
         <ScrollView horizontal scrollEnabled={false}>
-          {timeslots.map((index) => {
+          {columns.map((index) => {
             return (
-              <ACTimeslot key={index} style={headerViewStyle}>
+              <ACSlot key={index} style={headerViewStyle}>
                 <Text style={headerStyle}>{this.calculateTime(index)}</Text>
-              </ACTimeslot>
+              </ACSlot>
             );
           })}
         </ScrollView>
-        <ACCurrentTimeIndicator duration={duration} currentDay={this.currentDay.getTime()} />
+        <ACCurrentTimeIndicator duration={this.props.duration} currentDay={this.currentDay.getTime()} />
       </View>
     );
   }
 };
 
-export default ACTimeslotHeader;
+export default ACHeader;

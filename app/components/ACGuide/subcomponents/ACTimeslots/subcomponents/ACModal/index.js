@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
-import { ACImage } from '../../../../../index'
-import { ACContentAdvisory, ACTagLine } from './subcomponents';
+import ACImage from '../../../../../ACImage'
+import ACContentAdvisory from './subcomponents/ACContentAdvisory';
+import ACTagLine from './subcomponents/ACTagLine';
 
 import PropTypes from 'prop-types';
 

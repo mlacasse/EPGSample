@@ -4,7 +4,9 @@ import { View, FlatList, ScrollView, FormFactor } from '@youi/react-native-youi'
 
 import PropTypes from 'prop-types';
 
-import { ACModal, ACTimeslotHeader, ACTimeslotRow } from './subcomponents';
+import ACModal from './subcomponents/ACModal';
+import ACHeader from './subcomponents/ACHeader';
+import ACRow from './subcomponents/ACRow';
 
 import {
   ACTimeslotDefaultWidth,
@@ -16,8 +18,8 @@ const { Dimensions } = NativeModules;
 
 class ACTimeslots extends PureComponent {
   static propTypes = {
-    timeslots: PropTypes.array.isRequired,
     channels: PropTypes.array.isRequired,
+    duration: PropTypes.number.isRequired,
   };
 
   constructor(props) {
@@ -26,7 +28,7 @@ class ACTimeslots extends PureComponent {
     this.state = {
       showModal: false,
       grid: {
-        width: this.props.timeslots.length * ACTimeslotDefaultWidth,
+        width: this.props.duration * ACTimeslotDefaultWidth,
       },
     };
 
@@ -64,7 +66,12 @@ class ACTimeslots extends PureComponent {
     const { item, index } = data;
 
     return (
-      <ACTimeslotRow contents={item.contents} grid={this.state.grid} row={index} onFocus={this.props.onFocus}/>
+      <ACRow
+        contents={item.contents}
+        grid={this.state.grid}
+        row={index}
+        onFocus={this.props.onFocus}
+      />
     );
   }
 
@@ -90,8 +97,8 @@ class ACTimeslots extends PureComponent {
   }
 
   render = () => {
-    const { channels, timeslots, duration } = this.props;
-    
+    const { channels, duration } = this.props;
+
     return (
       <Fragment>
         <ScrollView
@@ -99,7 +106,7 @@ class ACTimeslots extends PureComponent {
           ref={this.viewRef}
           scrollEnabled={!FormFactor.isTV}>
           <View style={{ flex: 1, flexDirection: 'column' }}>
-            <ACTimeslotHeader timeslots={timeslots} duration={duration} />
+            <ACHeader duration={duration} />
             <FlatList
               ref={this.listRef}
               scrollEnabled={!FormFactor.isTV}

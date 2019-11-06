@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, NativeModules } from 'react-native';
 
-import { ACGuide } from './components';
+import ACGuide from './components/ACGuide';
 
 if (process.env.NODE_ENV !== 'production') {
   const {whyDidYouUpdate} = require('why-did-you-update');
@@ -26,7 +26,7 @@ class AppComponent extends PureComponent {
   render = () => {
     return(
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <ACGuide duration={2.5}/>
+        <ACGuide/>
       </View>
     );
   }

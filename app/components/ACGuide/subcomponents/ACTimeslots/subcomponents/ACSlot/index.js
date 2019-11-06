@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
-class ACTimeslot extends PureComponent {
+class ACSlot extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     style: PropTypes.object.isRequired,
@@ -87,4 +87,4 @@ class ACTimeslot extends PureComponent {
   };
 };
 
-export default ACTimeslot;
+export default ACSlot;

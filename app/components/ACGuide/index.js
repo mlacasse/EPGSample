@@ -1,7 +1,9 @@
 import React, { PureComponent, createRef } from 'react';
 import { View, NativeModules } from 'react-native';
 import { FormFactor } from '@youi/react-native-youi';
-import { ACChannels, ACTimeslots } from './subcomponents';
+
+import ACChannels from './subcomponents/ACChannels';
+import ACTimeslots from './subcomponents/ACTimeslots';
 
 import PropTypes from 'prop-types';
 import { ACDefaultHeight, ACTimeslotDefaultWidth } from '../../styles';
@@ -20,10 +22,8 @@ export default class ACGuide extends PureComponent {
 
     this.state = {
       ready: false,
-      timeslots: null,
+      duration: Math.ceil(this.props.duration ? this.props.duration : Dimensions.window.width / ACTimeslotDefaultWidth),
     }
-
-    this.duration = Math.ceil(this.props.duration ? this.props.duration : Dimensions.window.width / ACTimeslotDefaultWidth);
 
     this.epgChannels = createRef();
     this.epgTimeslots = createRef();
@@ -50,7 +50,7 @@ export default class ACGuide extends PureComponent {
       // We're using two magic numbers here - not great I know.
       //
       // We work under the assumption that a column is only 60 minutes.
-      for (var j = 0; j < this.duration; j ++) contents.push({ ...placeholder, empty: true });
+      for (var j = 0; j < this.state.duration; j ++) contents.push({ ...placeholder, empty: true });
 
       schedules.push({ channel: { name: null, resourceId: null }, contents });
     }
@@ -58,12 +58,11 @@ export default class ACGuide extends PureComponent {
     // Sometimes the data is garbage and we need to fill out what's missing in the
     // row.  This is yuck but it gets the job done.
     for (var k = 0; k < schedules.length; k++)
-      for (var l = 0; l < this.duration; l++) schedules[k].contents.push(placeholder);
+      for (var l = 0; l < this.state.duration; l++) schedules[k].contents.push(placeholder);
 
-    // Once complete, we store the schedule, number of timeslot colums, and ready flag.
+    // Once complete, we store the schedule and ready flag.
     this.setState({
       channels: schedules,
-      timeslots: [...Array(this.duration).keys()],
       ready: true,
     });
   }
@@ -82,7 +81,7 @@ export default class ACGuide extends PureComponent {
   }
 
   render = () => {
-    const { channels, timeslots, ready } = this.state;
+    const { channels, duration, ready } = this.state;
 
     // If ready is not set we return nothing - Dine & Dash!
     if (!ready) return null;
@@ -100,9 +99,8 @@ export default class ACGuide extends PureComponent {
         <View style={{ flex: 11 }}>
           <ACTimeslots
             ref={this.epgTimeslots}
-            timeslots={timeslots}
             channels={channels}
-            duration={this.duration}
+            duration={duration}
             onFocus={this.handleOnFocus}
             onScroll={this.handleOnScroll} />
         </View>

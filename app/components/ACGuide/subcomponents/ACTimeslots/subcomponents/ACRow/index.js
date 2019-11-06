@@ -3,7 +3,7 @@ import { Text, ScrollView } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
-import ACTimeslot from '../ACTimeslot';
+import ACSlot from '../ACSlot';
 
 import {
   ACTimeslotFocusStyle,
@@ -13,19 +13,19 @@ import {
   ACDefaultTextStyle,
 } from '../../../../../../styles';
 
-class ACTimeslotRow extends PureComponent {
+class ACRow extends PureComponent {
   static propTypes = {
     contents: PropTypes.array.isRequired,
     grid: PropTypes.object.isRequired,
     row: PropTypes.number.isRequired,
   };
 
-  calculateWidth = (duration) => {
+  calculateWidth = duration => {
     const { width } = ACTimeslotStyle;
     const slots = duration / ACTimeslotDefaultInterval;
 
     return slots * width;
-  }
+  };
 
   render = () => {
     const { contents, grid, row } = this.props;
@@ -47,7 +47,7 @@ class ACTimeslotRow extends PureComponent {
             cumulativeWidth += width;
 
             return (
-              <ACTimeslot
+              <ACSlot
                 focusable={!content.empty}
                 key={content.resourceId}
                 data={content}
@@ -57,15 +57,15 @@ class ACTimeslotRow extends PureComponent {
                 onFocus={this.props.onFocus}>
                 <Text style={ACDefaultTextStyle}>
                   {/* No point rendering the title if width is so small */}
-                  {width < ACTimeslotDefaultWidth / 3 ? '...' : content.title}
+                  {width < ACTimeslotDefaultWidth / 4 ? '...' : content.title}
                 </Text>
-              </ACTimeslot>
+              </ACSlot>
             );
           }
         })}
       </ScrollView>
     );
-  }
+  };
 };
 
-export default ACTimeslotRow;
+export default ACRow;
