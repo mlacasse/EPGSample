@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
+import { calculateTime } from '../../../../../../utils';
+
 import ACImage from '../../../../../ACImage'
-import ACContentAdvisory from './subcomponents/ACContentAdvisory';
-import ACTagLine from './subcomponents/ACTagLine';
 
 import PropTypes from 'prop-types';
 
@@ -15,57 +15,91 @@ class ACModal extends PureComponent {
     data: PropTypes.object.isRequired,
   };
 
+  renderReleaseYear = releaseYear => {
+    if (!releaseYear) return '';
+
+    return ` | ${releaseYear}`;
+  };
+
+  renderDurationText = duration => {
+    if (!duration) return null;
+
+    return (
+      `${Math.floor(duration / 60).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping:false })} min`
+    );
+  };
+
+  renderScheduledTime = (startTime, endTime) => {
+    if (!startTime || !endTime) return null;
+
+    return ` | ${calculateTime(startTime)} - ${calculateTime(endTime)}`;
+  };
+
+  renderGenres = genres => {
+    if (!genres) return null;
+
+    return (
+        genres.map((genre) => {
+          return ' | ' + genre;
+        })
+    );
+  };
+
+  renderParentalRating = parentalRating => {
+    if (!parentalRating) return null;
+
+    return ` | ${parentalRating}`;
+  };
+
+  renderTagLine = data => {
+    const { parentalRating, consumables, releaseYear, genres } = data;
+
+    const { duration, startTime, endTime } = consumables[0];
+
+    return (
+      <Text style={ACDefaultBodyTextStyle}>
+        {this.renderDurationText(duration)}
+        {this.renderGenres(genres)}
+        {this.renderReleaseYear(releaseYear)}
+        {this.renderScheduledTime(startTime, endTime)}
+        {this.renderParentalRating(parentalRating)}
+      </Text>
+    );
+  };
+
+  renderAdvisory = tvAdvisories => {
+    if (!tvAdvisories) return null;
+
+    return (
+      <Text style={ACDefaultBodyTextStyle}>
+        Content Advisory : {tvAdvisories.map((advisory, index) => {
+          const separator = index > 0 ? ' | ' : '';
+
+          return separator + advisory;
+        })}
+      </Text>
+    );
+  };
+
   render = () => {
     const { data, style } = this.props;
 
-    const { parentalRating, title, description, tvAdvisories, images, consumables, releaseYear, genres } = data;
+    const { title, description, tvAdvisories, images } = data;
 
     const { width, height, imageUrl } = images[2];
 
-    const { titleStyle, bodyStyle } = styles;
-
     return (
-      <View style={style}>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <View style={{ justifyContent: 'center' }}>
-            <ACImage style={{ width, height, marginLeft: 15 }} source={{ uri: imageUrl }}>
-              <View style={{ flex: 1, backgroundColor: 'black' }} />
-            </ACImage>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'column', margin: 10 }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Text style={titleStyle}>{title}</Text>
-            </View>
-            <ACTagLine
-              style={bodyStyle}
-              duration={consumables[0].duration}
-              startTime={consumables[0].startTime}
-              endTime={consumables[0].endTime}
-              releaseYear={releaseYear}
-              genres={genres}
-              parentalRating={parentalRating}
-            />
-            <Text style={bodyStyle}>{description}</Text>
-            <ACContentAdvisory style={bodyStyle} tvAdvisories={tvAdvisories} />
-          </View>
+      <View style={{...style, flexDirection: 'row', justifyContent: 'flex-start' }}>
+        <ACImage style={{ width, height }} source={{ uri: imageUrl }} />
+        <View style={{ flex: 1, flexDirection: 'column', marginLeft: 5 }}>
+          <Text style={ACDefaultTitleTextStyle}>{title}</Text>
+          {this.renderTagLine(data)}
+          <Text style={{...ACDefaultBodyTextStyle, marginTop: 20, marginBottom: 20, width: '95%' }}>{description}</Text>
+          {this.renderAdvisory(tvAdvisories)}
         </View>
       </View>
     );
-  }
+  };
 }
-
-const styles = {
-  titleStyle: {
-    ...ACDefaultTitleTextStyle,
-    marginTop: 10,
-    flex: 0.8,
-    flexShrink: 1,
-  },
-  bodyStyle: {
-    ...ACDefaultBodyTextStyle,
-    marginTop: 10,
-    flexShrink: 1,
-  },
-};
 
 export default ACModal;

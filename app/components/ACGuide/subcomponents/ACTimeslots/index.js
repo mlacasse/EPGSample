@@ -76,8 +76,8 @@ class ACTimeslots extends PureComponent {
   }
 
   renderModal = () => {
-    if (!FormFactor.isTV || !this.state.showModal) return null;
-
+    // if (!FormFactor.isTV || !this.state.showModal) return null;
+    if (!this.state.data) return null;
     const { grid } = this.state;
 
     const width = grid.width > Dimensions.window.width ? '100%' : grid.width;

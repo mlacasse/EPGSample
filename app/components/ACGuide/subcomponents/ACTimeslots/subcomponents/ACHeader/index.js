@@ -24,7 +24,7 @@ class ACHeader extends PureComponent {
     this.currentDay.setMinutes(0);
   }
 
-  calculateTime = (ordinal) => {
+  calculateTime = ordinal => {
     // TODO: Use date-fns module for date calculations
     const delta = 60 * 60000 * ordinal;
     const newDateTime = new Date(this.currentDay.getTime() + delta);

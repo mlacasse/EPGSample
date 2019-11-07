@@ -1,10 +1,14 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { NativeModules } from 'react-native';
 import { View } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
-import { ACTimeslotHeaderHeight, ACTimeslotDefaultWidth, ACTimeslotDefaultInterval } from '../../../../../../styles';
+import {
+  ACTimeslotHeaderHeight,
+  ACTimeslotDefaultWidth,
+  ACTimeslotDefaultInterval
+} from '../../../../../../styles';
 
 const { Dimensions } = NativeModules;
 
@@ -61,9 +65,7 @@ class ACCurrentTimeIndicator extends PureComponent {
     };
 
     return (
-      <Fragment>
-        <View style={currentTimeIndicator} />
-      </Fragment>
+      <View style={currentTimeIndicator} />
     );
   }
 }
