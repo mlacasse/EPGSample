@@ -6,9 +6,18 @@ import {
   NativeModules
 } from 'react-native';
 
+import PropTypes from 'prop-types';
+
 const { ImageUtilityModule } = NativeModules;
 
 class ACImage extends PureComponent {
+  static propTypes = {
+    style: PropTypes.array.isRequired,
+    source: PropTypes.object.isRequired,
+    default: PropTypes.object,
+    children: PropTypes.node,
+  };
+
   constructor(props) {
     super(props);
 
@@ -43,6 +52,17 @@ class ACImage extends PureComponent {
     ImageUtilityModule.show(this.getTombstoneHandle(), false);
   };
 
+  handleOnError = () => {
+    if (!this.props.default) return null;
+
+    const imageHandle = this.getImageHandle();
+    const tombstoneHandle = this.getTombstoneHandle();
+
+    ImageUtilityModule.show(tombstoneHandle, true);
+    ImageUtilityModule.reset(imageHandle);
+    ImageUtilityModule.setImage(imageHandle, this.props.default.uri);
+  };
+
   render() {
     return (
       <Fragment>
@@ -56,6 +76,7 @@ class ACImage extends PureComponent {
             ref={this.imageRef}
             style={{ resizeMode: 'contain', ...this.props.style }}
             onLoad={this.handleImageOnLoad}
+            onError={this.handleOnError}
           />
         </View>
       </Fragment>

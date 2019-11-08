@@ -62,9 +62,7 @@ class ACTimeslots extends PureComponent {
     onScroll(contentOffset.y);
   };
 
-  renderTimeslotRow = (data) => {
-    const { item, index } = data;
-
+  renderTimeslotRow = ({ item, index }) => {
     return (
       <ACRow
         contents={item.contents}
@@ -76,8 +74,7 @@ class ACTimeslots extends PureComponent {
   }
 
   renderModal = () => {
-    // if (!FormFactor.isTV || !this.state.showModal) return null;
-    if (!this.state.data) return null;
+    if (!FormFactor.isTV || !this.state.showModal) return null;
     const { grid } = this.state;
 
     const width = grid.width > Dimensions.window.width ? '100%' : grid.width;
@@ -92,7 +89,8 @@ class ACTimeslots extends PureComponent {
           position: 'absolute',
           top: ACDefaultHeight + ACTimeslotHeaderHeight,
           width,
-        }} />
+        }}
+      />
     );
   }
 
