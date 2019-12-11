@@ -44,31 +44,37 @@ bool App::UserInit()
     pPreferences->Set("TAG_CYIExoPlayer", "ERROR");
     pPreferences->Set("TAG_CYIHTTPService", "ERROR");
     pPreferences->Set("TAG_CYIHTTPServiceStats", "ERROR");
+    pPreferences->Set("TAG_CYIImageView", "ERROR");
     pPreferences->Set("TAG_CYILRUCache", "ERROR");
     pPreferences->Set("TAG_CYIPersistentStorePriv_Default", "ERROR");
+    pPreferences->Set("TAG_CYIPersistentCache", "ERROR");
     pPreferences->Set("TAG_CYISceneManager", "ERROR");
+    pPreferences->Set("TAG_CYIScreenTransitionManager", "ERROR");
+    pPreferences->Set("TAG_CYISecureStorageBridgeDefault", "ERROR");
+    pPreferences->Set("TAG_CYITCPSocketPriv_Base", "ERROR");
     pPreferences->Set("TAG_CYITransferHandle", "ERROR");
     pPreferences->Set("TAG_DecoratorMap", "ERROR");
     pPreferences->Set("TAG_EventDispatcherModule", "ERROR");
     pPreferences->Set("TAG_NativeAnimatedNodesManager", "ERROR");
-    pPreferences->Set("TAG_CYIScreenTransitionManager", "ERROR");
-    pPreferences->Set("TAG_CYISecureStorageBridgeDefault", "ERROR");
+    pPreferences->Set("TAG_NativeModuleBase", "ERROR");
     pPreferences->Set("TAG_ScrollViewManagerModule", "ERROR");
     pPreferences->Set("TAG_ShadowTree", "ERROR");
-    pPreferences->Set("TAG_CYITCPSocketPriv_Base", "ERROR");
-    pPreferences->Set("TAG_TimingModule", "ERROR");
     pPreferences->Set("TAG_Transfer", "ERROR");
     pPreferences->Set("TAG_UIManagerModule", "ERROR");
 
     // Debug messages
-    pPreferences->Set("TAG_CYIPersistentCache", "DEBUG");
+    pPreferences->Set("CYIAssetDecoderImage", "DEBUG");
 
     // Info messages
     pPreferences->Set("TAG_JavaScript", "INFO");
 
     // Suppressed messages
-    pPreferences->Set("TAG_CYIImageView", "NONE");
+    pPreferences->Set("TAG_CYIAssetManager", "NONE");
     pPreferences->Set("TAG_CYISceneNode", "NONE");
+    pPreferences->Set("TAG_CYITextRendererFT", "NONE");
+    pPreferences->Set("TAG_CYITextRendererFT::AddFont", "NONE");
+    pPreferences->Set("TAG_TextUtilities", "NONE");
+    pPreferences->Set("TAG_TimingModule", "NONE");
 
     CYILogger::SetPreferences(pPreferences);
 

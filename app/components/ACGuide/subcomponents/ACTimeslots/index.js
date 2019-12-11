@@ -11,6 +11,7 @@ import ACRow from './subcomponents/ACRow';
 import {
   ACTimeslotDefaultWidth,
   ACTimeslotHeaderHeight,
+  ACTimeslotStyle,
   ACDefaultHeight,
 } from '../../../../styles';
 
@@ -30,6 +31,16 @@ class ACTimeslots extends PureComponent {
       grid: {
         width: this.props.duration * ACTimeslotDefaultWidth,
       },
+      renderToIndex: {
+        min: 0,
+        max: !FormFactor.isTV ? props.channels.length : 10,
+      },
+    };
+
+    this.viewabilityConfig = {
+      waitForInteraction: false,
+      minimumViewTime: 250,
+      viewAreaCoveragePercentThreshold: 0,
     };
 
     this.viewRef = createRef();
@@ -37,6 +48,20 @@ class ACTimeslots extends PureComponent {
 
     this.timer = null;
   }
+
+  handleOnViewableItemsChanged = ({ viewableItems }) => {
+    const visibleKeys = viewableItems.map(item => item.index);
+    const renderToIndex = {
+      min: Math.min(...visibleKeys) - 1,
+      max: Math.max(...visibleKeys) + 1,
+    };
+
+    if (isFinite(renderToIndex.min) && 
+        isFinite(renderToIndex.max) && 
+        renderToIndex !== this.state.renderToIndex) {
+      this.setState({ renderToIndex });
+    }
+  };
 
   scrollTo = (x, offset) => {
     this.viewRef.value.scrollTo({ animated: FormFactor.isTV, x });
@@ -63,6 +88,12 @@ class ACTimeslots extends PureComponent {
   };
 
   renderTimeslotRow = ({ item, index }) => {
+    const { renderToIndex } = this.state;
+
+    if (index > renderToIndex.max || index < renderToIndex.min) { 
+      return <View style={{...ACTimeslotStyle, width: this.state.grid.width }} />;
+    }
+
     return (
       <ACRow
         contents={item.contents}
@@ -109,12 +140,14 @@ class ACTimeslots extends PureComponent {
               ref={this.listRef}
               scrollEnabled={!FormFactor.isTV}
               data={channels}
+              extraData={this.state.renderToIndex}
               keyExtractor={(data, index) => '' + index}
               renderItem={this.renderTimeslotRow}
               decelerationRate='fast'
               snapToAlignment='start'
               snapToInterval={ACDefaultHeight}
-              windowSize={20}
+              viewabilityConfig={this.viewabilityConfig}
+              onViewableItemsChanged={this.handleOnViewableItemsChanged}      
               onScroll={this.handleOnScroll}
             />
           </View>

@@ -27,9 +27,9 @@ class ACImage extends PureComponent {
 
   componentDidMount = () => {
     ImageUtilityModule.setImage(this.getImageHandle(), this.props.source.uri);
-  }
+  };
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidUpdate = (prevProps, _prevState) => {
     if (prevProps.source.uri === this.props.source.uri) return;
 
     const imageHandle = this.getImageHandle();
@@ -38,15 +38,15 @@ class ACImage extends PureComponent {
     ImageUtilityModule.show(tombstoneHandle, true);
     ImageUtilityModule.reset(imageHandle);
     ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
-  }
+  };
 
   getTombstoneHandle = () => {
     return findNodeHandle(this.tombstoneRef.value);
-  }
+  };
 
   getImageHandle = () => {
     return findNodeHandle(this.imageRef.value);
-  }
+  };
 
   handleImageOnLoad = () => {
     ImageUtilityModule.show(this.getTombstoneHandle(), false);
