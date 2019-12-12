@@ -19,9 +19,6 @@ class ACSlot extends PureComponent {
     this.state = {      
       isFocused: false,
     };
-
-    this.xOffset = 0;
-    this.yOffset = 0;
   }
 
   setFocusable = (ref) => {
@@ -31,8 +28,10 @@ class ACSlot extends PureComponent {
   }
 
   handleOnFocus = () => {
-    if (this.props.focusable && this.props.onFocus) {
-      this.props.onFocus(this.xOffset, this.yOffset, this.props.data);
+    const { xOffset, yOffset, data, focusable, onFocus } = this.props;
+
+    if (focusable && onFocus) {
+      onFocus(xOffset, yOffset, data);
     }
 
     this.setState({ isFocused: true });
@@ -47,21 +46,16 @@ class ACSlot extends PureComponent {
   };
 
   handleOnPress = () => {
+    const { xOffset, yOffset } = this.props;
+
     if (this.props.focusable && this.props.onFocus) {
-      this.props.onFocus(this.xOffset, this.yOffset, this.props.data);
+      this.props.onFocus(xOffset, yOffset, this.props.data);
     }
-  };
-
-  handleOnLayout = (event) => {
-    const { row, style } = this.props;
-
-    this.yOffset = row * style.height;
-    this.xOffset = event.nativeEvent.layout.x;
   };
 
   renderForMobile = () => {
     return (
-      <Touchable onPress={this.handleOnPress} onLayout={this.handleOnLayout}>
+      <Touchable onPress={this.handleOnPress}>
         <View style={this.props.style}>{this.props.children}</View>
       </Touchable>
     );
@@ -75,8 +69,7 @@ class ACSlot extends PureComponent {
         ref={this.setFocusable}
         style={viewStyle}
         onFocus={this.handleOnFocus}
-        onBlur={this.handleOnBlur}
-        onLayout={this.handleOnLayout}>
+        onBlur={this.handleOnBlur}>
         {this.props.children}
       </View>
     );

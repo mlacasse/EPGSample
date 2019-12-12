@@ -30,6 +30,8 @@ class ACRow extends PureComponent {
   render = () => {
     const { contents, grid, row } = this.props;
 
+    const yOffset = row * ACTimeslotStyle.height;
+
     let cumulativeWidth = 0;
 
     return (
@@ -44,6 +46,8 @@ class ACRow extends PureComponent {
           }
 
           if (width > 0) {
+            const xOffset = cumulativeWidth;
+
             cumulativeWidth += width;
 
             return (
@@ -51,7 +55,8 @@ class ACRow extends PureComponent {
                 focusable={!content.empty}
                 key={content.resourceId}
                 data={content}
-                row={row}
+                yOffset={yOffset}
+                xOffset={xOffset}
                 style={{...ACTimeslotStyle, width }}
                 focusStyle={{...ACTimeslotFocusStyle, width }}
                 onFocus={this.props.onFocus}

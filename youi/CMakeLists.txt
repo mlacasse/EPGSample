@@ -13,7 +13,7 @@ set(YI_YOUI_ENGINE_VERSION 4.999.0 CACHE STRING "Version required for the You.i 
 set(YI_VERSION_NUMBER 1.0.0.0 CACHE STRING "Build version of the application. This is the version that will be displayed to the end user in the store.")
 set(YI_BUILD_NUMBER "ENG-unversioned" CACHE STRING "Release version number that needs to be incremented for each store submission. For Apple platforms, this is the CFBundleVersion. For Android, this is the Version Code.")
 
-if (YI_IOS OR YI_TVOS OR YI_OSX)
+if (APPLE)
     set(CMAKE_CXX_COMPILER_FORCED 1)
     set(CMAKE_C_COMPILER_FORCED 1)
     set(CMAKE_THREAD_LIBS_INIT "-lpthread")
