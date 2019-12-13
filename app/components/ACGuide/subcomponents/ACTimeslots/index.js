@@ -11,7 +11,6 @@ import ACRow from './subcomponents/ACRow';
 import {
   ACTimeslotDefaultWidth,
   ACTimeslotHeaderHeight,
-  ACTimeslotStyle,
   ACDefaultHeight,
 } from '../../../../styles';
 

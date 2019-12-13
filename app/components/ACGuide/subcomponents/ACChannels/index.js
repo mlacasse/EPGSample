@@ -19,10 +19,10 @@ class ACChannels extends PureComponent {
   }
 
   scrollTo = offset => {
-    this.listRef.value.scrollToOffset({ animated: true, offset });
+    this.listRef.value.scrollToOffset({ animated: FormFactor.isTV, offset });
   };
 
-  renderChannel = ({ item, index }) => {
+  renderChannel = ({ item }) => {
     const { name, majorChannelNumber } = item.channel;
 
     const uri = majorChannelNumber ? `res://drawable/default/${majorChannelNumber}.png` : null;
