@@ -1,9 +1,31 @@
-const ACTimeslotDefaultInterval = 3600; // 60 minutes
-const ACTimeslotDefaultWidth = 3600 * 0.25;
-const ACChannelImageDefaultWidth = 84;
-const ACChannelImageDefaultHeight = 62;
-const ACTimeslotHeaderHeight = 47;
-const ACDefaultHeight = 94;
+import { FormFactor } from '@youi/react-native-youi';
+
+const ACTimeslotDefaultInterval = FormFactor.select({
+  TV: 3600, // 60 minutes
+  default: 900,
+});
+
+const ACTimeslotDefaultWidth = ACTimeslotDefaultInterval * 0.25;
+
+const ACChannelImageDefaultWidth = FormFactor.select({
+  TV: 84,
+  default: 32,
+});
+
+const ACChannelImageDefaultHeight = FormFactor.select({
+  TV: 62,
+  default: 22,
+});
+
+const ACTimeslotHeaderHeight = FormFactor.select({
+  TV: 47,
+  default: 24,
+});
+
+const ACDefaultHeight = FormFactor.select({
+  TV: 94,
+  default: 48,
+});
 
 const ACChannelStyle = {
   flex: 1,
@@ -43,7 +65,10 @@ const ACTimeslotStyle = {
 };
 
 const ACDefaultTextStyle = {
-  fontSize: 20,
+  fontSize: FormFactor.select({
+    TV: 20,
+    default: 14,
+  }),
   color: 'grey',
 };
 
@@ -53,7 +78,10 @@ const ACDefaultTitleTextStyle = {
 };
 
 const ACDefaultBodyTextStyle = {
-  fontSize: 20,
+  fontSize: FormFactor.select({
+    TV: 20,
+    default: 14,
+  }),
   color: 'grey',
 };
 

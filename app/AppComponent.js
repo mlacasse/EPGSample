@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { View, NativeModules } from 'react-native';
 
+import { FormFactor } from '@youi/react-native-youi';
+
 import ACGuide from './components/ACGuide';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,8 +21,12 @@ class AppComponent extends PureComponent {
     // 4 = LandscapeLeft
     // 5 = PortraitUpright
     // 6 = AutoUpright
+    const orientation = FormFactor.select({
+      Handset: 1,
+      default: 6,
+    });
 
-    NativeModules.OrientationLock.setRotationMode(6);
+    NativeModules.OrientationLock.setRotationMode(orientation);
   }
 
   render = () => {

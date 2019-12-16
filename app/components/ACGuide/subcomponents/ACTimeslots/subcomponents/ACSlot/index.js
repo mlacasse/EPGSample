@@ -46,10 +46,10 @@ class ACSlot extends PureComponent {
   };
 
   handleOnPress = () => {
-    const { xOffset, yOffset } = this.props;
+    const { xOffset, yOffset, focusable, onFocus, data } = this.props;
 
-    if (this.props.focusable && this.props.onFocus) {
-      this.props.onFocus(xOffset, yOffset, this.props.data);
+    if (focusable && onFocus) {
+      onFocus(xOffset, yOffset, data);
     }
   };
 

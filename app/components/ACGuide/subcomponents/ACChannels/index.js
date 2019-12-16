@@ -20,7 +20,7 @@ class ACChannels extends PureComponent {
   }
 
   scrollTo = offset => {
-    this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
+    this.listRef.current.scrollToOffset({ animated: true, offset });
   };
 
   renderChannel = ({ item }) => {

@@ -75,9 +75,11 @@ export default class ACGuide extends PureComponent {
   };
 
   handleOnFocus = (xOffset, yOffset, data) => {
-    this.epgChannels.current.scrollTo(yOffset);
-    this.epgTimeslots.current.scrollTo(xOffset, yOffset);
-    this.epgTimeslots.current.showModal(data);
+    if (FormFactor.isTV) {
+      this.epgChannels.current.scrollTo(yOffset);
+      this.epgTimeslots.current.scrollTo(xOffset, yOffset);
+      this.epgTimeslots.current.showModal(data);
+    }
   }
 
   render = () => {
