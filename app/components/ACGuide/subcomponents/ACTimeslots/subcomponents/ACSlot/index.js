@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { View, FocusManager, FormFactor } from '@youi/react-native-youi';
-import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import { FocusManager, FormFactor } from '@youi/react-native-youi';
+import { View, Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -21,11 +21,11 @@ class ACSlot extends PureComponent {
     };
   }
 
-  setFocusable = (ref) => {
+  setFocusable = ref => {
     if (this.props.focusable && ref) {
       FocusManager.setFocusable(ref, true);
     }
-  }
+  };
 
   handleOnFocus = () => {
     const { xOffset, yOffset, data, focusable, onFocus } = this.props;

@@ -70,14 +70,14 @@ export default class ACGuide extends PureComponent {
   // scroll the channel list to match
   handleOnScroll = yOffset => {
     if (!FormFactor.isTV) {
-      this.epgChannels.value.scrollTo(yOffset);
+      this.epgChannels.current.scrollTo(yOffset);
     }
   };
 
   handleOnFocus = (xOffset, yOffset, data) => {
-    this.epgChannels.value.scrollTo(yOffset);
-    this.epgTimeslots.value.scrollTo(xOffset, yOffset);
-    this.epgTimeslots.value.showModal(data);
+    this.epgChannels.current.scrollTo(yOffset);
+    this.epgTimeslots.current.scrollTo(xOffset, yOffset);
+    this.epgTimeslots.current.showModal(data);
   }
 
   render = () => {

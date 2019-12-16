@@ -1,5 +1,6 @@
 import React, { createRef, PureComponent } from 'react';
-import { View, Text, FlatList, FormFactor } from '@youi/react-native-youi';
+import { View, Text, FlatList } from 'react-native';
+import { FormFactor } from '@youi/react-native-youi';
 
 import ACImage from '../../../ACImage';
 
@@ -19,7 +20,7 @@ class ACChannels extends PureComponent {
   }
 
   scrollTo = offset => {
-    this.listRef.value.scrollToOffset({ animated: FormFactor.isTV, offset });
+    this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
   };
 
   renderChannel = ({ item }) => {

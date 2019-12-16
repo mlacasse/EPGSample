@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { NativeModules } from 'react-native';
-import { View } from '@youi/react-native-youi';
+import { View, NativeModules } from 'react-native';
 
 import PropTypes from 'prop-types';
 

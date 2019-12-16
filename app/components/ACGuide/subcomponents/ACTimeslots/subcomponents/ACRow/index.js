@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, ScrollView } from '@youi/react-native-youi';
+import { Text, ScrollView } from 'react-native';
 
 import PropTypes from 'prop-types';
 

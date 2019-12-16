@@ -1,6 +1,6 @@
 import React, { createRef, PureComponent, Fragment } from 'react';
-import { NativeModules } from 'react-native';
-import { View, FlatList, ScrollView, FormFactor } from '@youi/react-native-youi';
+import { View, FlatList, ScrollView, NativeModules } from 'react-native';
+import { FormFactor } from '@youi/react-native-youi';
 
 import PropTypes from 'prop-types';
 
@@ -39,21 +39,21 @@ class ACTimeslots extends PureComponent {
   }
 
   scrollTo = (x, offset) => {
-    this.viewRef.value.scrollTo({ animated: FormFactor.isTV, x });
-    this.listRef.value.scrollToOffset({ animated: FormFactor.isTV, offset });
-  }
+    this.viewRef.current.scrollTo({ animated: FormFactor.isTV, x });
+    this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
+  };
 
   hideModal = () => {
     this.setState({ showModal: false });
-  }
+  };
 
-  showModal = (data) => {
+  showModal = data => {
     clearTimeout(this.timer);
 
     this.setState({ showModal: true, data });
 
     this.timer = setTimeout(this.hideModal, 5000);
-  }
+  };
 
   handleOnScroll = event => {
     const { onScroll } = this.props;
@@ -71,7 +71,7 @@ class ACTimeslots extends PureComponent {
         onFocus={this.props.onFocus}
       />
     );
-  }
+  };
 
   renderModal = () => {
     if (!FormFactor.isTV || !this.state.showModal) return null;
@@ -92,9 +92,9 @@ class ACTimeslots extends PureComponent {
         }}
       />
     );
-  }
+  };
 
-  render = () => {
+  render() {
     const { channels, duration } = this.props;
 
     return (

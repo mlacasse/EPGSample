@@ -26,7 +26,11 @@ class ACImage extends PureComponent {
   }
 
   componentDidMount = () => {
-    ImageUtilityModule.setImage(this.getImageHandle(), this.props.source.uri);
+    const imageHandle = this.getImageHandle();
+
+    if (imageHandle) {
+      ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+    }
   };
 
   componentDidUpdate = (prevProps, _prevState) => {
@@ -35,21 +39,27 @@ class ACImage extends PureComponent {
     const imageHandle = this.getImageHandle();
     const tombstoneHandle = this.getTombstoneHandle();
 
-    ImageUtilityModule.show(tombstoneHandle, true);
-    ImageUtilityModule.reset(imageHandle);
-    ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+    if (tombstoneHandle && imageHandle) {
+      ImageUtilityModule.show(tombstoneHandle, true);
+      ImageUtilityModule.reset(imageHandle);
+      ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+    }
   };
 
   getTombstoneHandle = () => {
-    return findNodeHandle(this.tombstoneRef.value);
+    return findNodeHandle(this.tombstoneRef.current);
   };
 
   getImageHandle = () => {
-    return findNodeHandle(this.imageRef.value);
+    return findNodeHandle(this.imageRef.current);
   };
 
   handleImageOnLoad = () => {
-    ImageUtilityModule.show(this.getTombstoneHandle(), false);
+    const tombstoneHandle = this.getTombstoneHandle();
+
+    if (tombstoneHandle) {
+      ImageUtilityModule.show(tombstoneHandle, false);
+    }
   };
 
   handleOnError = () => {
@@ -58,9 +68,11 @@ class ACImage extends PureComponent {
     const imageHandle = this.getImageHandle();
     const tombstoneHandle = this.getTombstoneHandle();
 
-    ImageUtilityModule.show(tombstoneHandle, true);
-    ImageUtilityModule.reset(imageHandle);
-    ImageUtilityModule.setImage(imageHandle, this.props.default.uri);
+    if (tombstoneHandle && imageHandle) {
+      ImageUtilityModule.show(tombstoneHandle, true);
+      ImageUtilityModule.reset(imageHandle);
+      ImageUtilityModule.setImage(imageHandle, this.props.default.uri);
+    }
   };
 
   render() {
