@@ -8,6 +8,7 @@ import {
   ACDefaultHeight,
   ACDefaultTextStyle,
   ACChannelStyle,
+  ACChannelTextStyle,
   ACChannelImageStyle,
   ACTimeslotHeaderHeight
 } from '../../../../styles';
@@ -20,7 +21,7 @@ class ACChannels extends PureComponent {
   }
 
   scrollTo = offset => {
-    this.listRef.current.scrollToOffset({ animated: true, offset });
+    this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
   };
 
   renderChannel = ({ item }) => {
@@ -31,7 +32,7 @@ class ACChannels extends PureComponent {
     return (
       <View style={ACChannelStyle}>
         <ACImage style={ACChannelImageStyle} source={{ uri }}>
-          <Text style={{ ...ACDefaultTextStyle, alignSelf: 'center' }}>{name}</Text>
+          <Text style={{ ...ACChannelTextStyle, alignSelf: 'center' }}>{name}</Text>
         </ACImage>
       </View>
     );

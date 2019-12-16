@@ -42,7 +42,7 @@ export default class ACGuide extends PureComponent {
     // This block rips through the schedule and adds as many rows as necessary to 
     // ensure that the last row can be selected and renders above the modal's
     // location.
-    const fillerRows = Math.floor(Dimensions.window.height / ACDefaultHeight);
+    const fillerRows = FormFactor.isTV ? Math.floor(Dimensions.window.height / ACDefaultHeight) : 0;
 
     for (var i = 0; i < fillerRows; i++) {
       let contents = [];
@@ -75,11 +75,12 @@ export default class ACGuide extends PureComponent {
   };
 
   handleOnFocus = (xOffset, yOffset, data) => {
-    if (FormFactor.isTV) {
-      this.epgChannels.current.scrollTo(yOffset);
-      this.epgTimeslots.current.scrollTo(xOffset, yOffset);
+    this.epgChannels.current.scrollTo(yOffset);
+    this.epgTimeslots.current.scrollTo(xOffset, yOffset);
+
+    // if (FormFactor.isTV) {
       this.epgTimeslots.current.showModal(data);
-    }
+    // }
   }
 
   render = () => {

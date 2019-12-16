@@ -11,6 +11,7 @@ import {
   ACDefaultTitleTextStyle,
   ACDefaultBodyTextStyle,
   ACModalBodyTextStyle,
+  ACModalImageStyle,
 } from '../../../../../../styles';
 
 class ACModal extends PureComponent {
@@ -85,24 +86,30 @@ class ACModal extends PureComponent {
     );
   };
 
+  renderDescription = description => {
+    return <Text style={ACModalBodyTextStyle}>{description}</Text>;
+  };
+
   render() {
     const { data, style } = this.props;
 
+    if (!data) return null;
+
     const { title, description, tvAdvisories, images } = data;
 
-    const { width, height, imageId } = images[0];
+    const { imageId } = images[0];
 
     return (
       <View style={{...style, flexDirection: 'row', justifyContent: 'flex-start' }}>
         <ACImage
-          style={{ width, height }}
+          style={ACModalImageStyle}
           source={{ uri: `res://drawable/default/${imageId}.jpeg` }}
           default={{ uri: 'res://drawable/default/default.jpeg' }}
         />
         <View style={{ flex: 1, flexDirection: 'column', marginLeft: 5 }}>
           <Text style={ACDefaultTitleTextStyle}>{title}</Text>
           {this.renderTagLine(data)}
-          <Text style={ACModalBodyTextStyle}>{description}</Text>
+          {this.renderDescription(description)}
           {this.renderAdvisory(tvAdvisories)}
         </View>
       </View>

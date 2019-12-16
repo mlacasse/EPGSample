@@ -60,13 +60,11 @@ class ACRow extends PureComponent {
                 style={{...ACTimeslotStyle, width }}
                 focusStyle={{...ACTimeslotFocusStyle, width }}
                 onFocus={this.props.onFocus}
-                onHighlight={this.props.highlight}
-                onUnhighlight={this.props.unhighlight}
                 {...this.props}
               >
                 <Text style={ACDefaultTextStyle}>
                   {/* No point rendering the title if width is so small */}
-                  {width < ACTimeslotDefaultWidth / 4 ? '...' : content.title}
+                  {width < ACTimeslotDefaultWidth / 3 ? '...' : content.title}
                 </Text>
               </ACSlot>
             );

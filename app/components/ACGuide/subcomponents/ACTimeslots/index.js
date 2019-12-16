@@ -12,8 +12,8 @@ import ACRow from './subcomponents/ACRow';
 
 import {
   ACTimeslotDefaultWidth,
-  ACTimeslotHeaderHeight,
   ACDefaultHeight,
+  ACModalStyle,
 } from '../../../../styles';
 
 const { Dimensions } = NativeModules;
@@ -43,8 +43,8 @@ class ACTimeslots extends PureComponent {
   scrollTo = (x, offset) => {
     this.hideModal();
 
-    this.viewRef.current.scrollTo({ animated: FormFactor.isTV, x });
-    this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
+    this.viewRef.current.scrollTo({ animated: true, x });
+    this.listRef.current.scrollToOffset({ animated: true, offset });
   };
 
   hideModal = () => {
@@ -78,23 +78,14 @@ class ACTimeslots extends PureComponent {
   };
 
   renderModal = () => {
-    if (!FormFactor.isTV || !this.state.showModal) return null;
+    if (!this.state.showModal) return null;
+
     const { grid } = this.state;
 
     const width = grid.width > Dimensions.window.width ? '100%' : grid.width;
 
     return (
-      <ACModal
-        data={this.state.data}
-        style={{
-          backgroundColor: 'white',
-          borderColor: '#4DB8FF',
-          borderWidth: 3,
-          position: 'absolute',
-          top: ACDefaultHeight + ACTimeslotHeaderHeight,
-          width,
-        }}
-      />
+      <ACModal data={this.state.data} style={{ ...ACModalStyle, width }} />
     );
   };
 
@@ -118,6 +109,7 @@ class ACTimeslots extends PureComponent {
               decelerationRate='fast'
               snapToAlignment='start'
               snapToInterval={ACDefaultHeight}
+              scrollEventThrottle={16}
               onScroll={this.handleOnScroll}
             />
           </View>
