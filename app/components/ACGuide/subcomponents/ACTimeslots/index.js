@@ -2,6 +2,8 @@ import React, { createRef, PureComponent, Fragment } from 'react';
 import { View, FlatList, ScrollView, NativeModules } from 'react-native';
 import { FormFactor } from '@youi/react-native-youi';
 
+import _debounce from 'lodash.debounce';
+
 import PropTypes from 'prop-types';
 
 import ACModal from './subcomponents/ACModal';
@@ -39,6 +41,8 @@ class ACTimeslots extends PureComponent {
   }
 
   scrollTo = (x, offset) => {
+    this.hideModal();
+
     this.viewRef.current.scrollTo({ animated: FormFactor.isTV, x });
     this.listRef.current.scrollToOffset({ animated: FormFactor.isTV, offset });
   };
@@ -47,13 +51,13 @@ class ACTimeslots extends PureComponent {
     this.setState({ showModal: false });
   };
 
-  showModal = data => {
+  showModal = _debounce(data => {
     clearTimeout(this.timer);
 
     this.setState({ showModal: true, data });
 
     this.timer = setTimeout(this.hideModal, 5000);
-  };
+  }, 250, { leading: true, trailing: false });
 
   handleOnScroll = event => {
     const { onScroll } = this.props;

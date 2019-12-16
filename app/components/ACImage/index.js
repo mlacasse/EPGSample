@@ -28,7 +28,7 @@ class ACImage extends PureComponent {
   componentDidMount = () => {
     const imageHandle = this.getImageHandle();
 
-    if (imageHandle) {
+    if (imageHandle && this.props.source.uri) {
       ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
     }
   };
@@ -42,7 +42,9 @@ class ACImage extends PureComponent {
     if (tombstoneHandle && imageHandle) {
       ImageUtilityModule.show(tombstoneHandle, true);
       ImageUtilityModule.reset(imageHandle);
-      ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+      if (this.props.source.uri) {
+        ImageUtilityModule.setImage(imageHandle, this.props.source.uri);
+      }
     }
   };
 

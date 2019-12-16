@@ -44,7 +44,6 @@ bool App::UserInit()
     pPreferences->Set("TAG_CYIExoPlayer", "ERROR");
     pPreferences->Set("TAG_CYIHTTPService", "ERROR");
     pPreferences->Set("TAG_CYIHTTPServiceStats", "ERROR");
-    pPreferences->Set("TAG_CYIImageView", "ERROR");
     pPreferences->Set("TAG_CYILRUCache", "ERROR");
     pPreferences->Set("TAG_CYIPersistentStorePriv_Default", "ERROR");
     pPreferences->Set("TAG_CYIPersistentCache", "ERROR");
@@ -63,13 +62,15 @@ bool App::UserInit()
     pPreferences->Set("TAG_UIManagerModule", "ERROR");
 
     // Debug messages
-    pPreferences->Set("CYIAssetDecoderImage", "DEBUG");
 
     // Info messages
     pPreferences->Set("TAG_JavaScript", "INFO");
 
     // Suppressed messages
     pPreferences->Set("TAG_CYIAssetManager", "NONE");
+    pPreferences->Set("TAG_CYIAssetDecoderImage::DecodeAsset", "NONE");
+    pPreferences->Set("TAG_CYIImageDecoder_Apple", "NONE");
+    pPreferences->Set("TAG_CYIImageView", "NONE");
     pPreferences->Set("TAG_CYISceneNode", "NONE");
     pPreferences->Set("TAG_CYITextRendererFT", "NONE");
     pPreferences->Set("TAG_CYITextRendererFT::AddFont", "NONE");

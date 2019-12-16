@@ -57,6 +57,14 @@ const ACDefaultBodyTextStyle = {
   color: 'grey',
 };
 
+const ACModalBodyTextStyle = {
+  marginBottom: 20,
+  marginTop: 20,
+  fontSize: 20,
+  color: 'grey',
+  width: '95%',
+};
+
 export {
   ACChannelStyle,
   ACChannelImageStyle,
@@ -71,4 +79,5 @@ export {
   ACDefaultTextStyle,
   ACDefaultTitleTextStyle,
   ACDefaultBodyTextStyle,
+  ACModalBodyTextStyle,
 };
