@@ -33,51 +33,55 @@ bool App::UserInit()
     // Disable hud
     SetHUDVisibility(false);
 
-    // Setup Logging Preferences
-    std::shared_ptr<CYIPreferences> pPreferences(new CYIPreferences());
-
     // App wide Log preferences
-    pPreferences->Set("TAG_GENERAL", "DEBUG");
+    CYILogger::SetLevel(EYILogLevel::debug);
 
-    // Error messages
-    pPreferences->Set("TAG_CYIAssetDownloadHelper", "ERROR");
-    pPreferences->Set("TAG_CYIExoPlayer", "ERROR");
-    pPreferences->Set("TAG_CYIHTTPService", "ERROR");
-    pPreferences->Set("TAG_CYIHTTPServiceStats", "ERROR");
-    pPreferences->Set("TAG_CYILRUCache", "ERROR");
-    pPreferences->Set("TAG_CYIPersistentStorePriv_Default", "ERROR");
-    pPreferences->Set("TAG_CYIPersistentCache", "ERROR");
-    pPreferences->Set("TAG_CYISceneManager", "ERROR");
-    pPreferences->Set("TAG_CYIScreenTransitionManager", "ERROR");
-    pPreferences->Set("TAG_CYISecureStorageBridgeDefault", "ERROR");
-    pPreferences->Set("TAG_CYITCPSocketPriv_Base", "ERROR");
-    pPreferences->Set("TAG_CYITransferHandle", "ERROR");
-    pPreferences->Set("TAG_DecoratorMap", "ERROR");
-    pPreferences->Set("TAG_EventDispatcherModule", "ERROR");
-    pPreferences->Set("TAG_NativeAnimatedNodesManager", "ERROR");
-    pPreferences->Set("TAG_NativeModuleBase", "ERROR");
-    pPreferences->Set("TAG_ScrollViewManagerModule", "ERROR");
-    pPreferences->Set("TAG_ShadowTree", "ERROR");
-    pPreferences->Set("TAG_Transfer", "ERROR");
-    pPreferences->Set("TAG_UIManagerModule", "ERROR");
+    // Now create and install our logging filter.
+    CYILogger::PushFilter(CYILogger::CreateFilter({
+        { "CYIAssetDownloadHelper", EYILogLevel::err },
+        { "CYIExoPlayer", EYILogLevel::err },
+        { "CYIFocusState", EYILogLevel::err },
+        { "CYIHTTPService", EYILogLevel::err },
+        { "CYIHTTPServiceStats", EYILogLevel::err },
+        { "CYIImageView", EYILogLevel::err },
+        { "CYILRUCache", EYILogLevel::err },
+        { "CYIPersistentStorePriv_Default", EYILogLevel::err },
+        { "CYIPersistentCache", EYILogLevel::err },
+        { "CYISceneManager", EYILogLevel::err },
+        { "CYIScreenTransitionManager", EYILogLevel::err },
+        { "CYISecureStorageBridgeDefault", EYILogLevel::err },
+        { "CYITCPSocketPriv_Base", EYILogLevel::err },
+        { "CYITransferHandle", EYILogLevel::err },
+        { "AccessibilityInfoModule", EYILogLevel::err },
+        { "DecoratorMap", EYILogLevel::err },
+        { "EventDispatcherModule", EYILogLevel::err },
+        { "MakeMethod_18ImageUtilityModule", EYILogLevel::err },
+        { "NativeAnimatedNodesManager", EYILogLevel::err },
+        { "NativeModuleBase", EYILogLevel::err },
+        { "TimingModule", EYILogLevel::err },
+        { "Transfer", EYILogLevel::err },
+        { "ShadowTree", EYILogLevel::err },
+        { "UIManagerModule", EYILogLevel::err },
 
-    // Debug messages
+        // Debug messages
+        { "LocationManagerDelegate", EYILogLevel::debug },
+        { "GeoLocationModule", EYILogLevel::debug },
+        { "ShadowLinearGradientView", EYILogLevel::debug },
+        
+        // Info messages
+        { "JavaScript", EYILogLevel::info },
 
-    // Info messages
-    pPreferences->Set("TAG_JavaScript", "INFO");
+        // Suppressed messages
+        { "CYISceneNode", EYILogLevel::off },
+        { "CYIAssetManager", EYILogLevel::off },
+        { "CYITextRendererFT", EYILogLevel::off },
+        { "CYITextRendererFT::AddFont", EYILogLevel::off },
+        { "ReactComponent", EYILogLevel::off },
+        { "TextUtilities", EYILogLevel::off },
+        { "TimingModule", EYILogLevel::off },
 
-    // Suppressed messages
-    pPreferences->Set("TAG_CYIAssetManager", "NONE");
-    pPreferences->Set("TAG_CYIAssetDecoderImage::DecodeAsset", "NONE");
-    pPreferences->Set("TAG_CYIImageDecoder_Apple", "NONE");
-    pPreferences->Set("TAG_CYIImageView", "NONE");
-    pPreferences->Set("TAG_CYISceneNode", "NONE");
-    pPreferences->Set("TAG_CYITextRendererFT", "NONE");
-    pPreferences->Set("TAG_CYITextRendererFT::AddFont", "NONE");
-    pPreferences->Set("TAG_TextUtilities", "NONE");
-    pPreferences->Set("TAG_TimingModule", "NONE");
-
-    CYILogger::SetPreferences(pPreferences);
+    // by default, only warnings and errors are logged
+    }, EYILogLevel::debug));
 
     CYINetworkConfiguration config;
 
